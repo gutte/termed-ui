@@ -3,7 +3,7 @@
 
   angular.module('termed.resources.referrers', ['pascalprecht.translate', 'termed.rest'])
 
-  .directive('thlResourceReferrers', function($translate, ReferenceAttributeList) {
+  .directive('thlResourceReferrers', function($translate, ResourceReferrerList) {
     return {
       restrict: 'E',
       scope: {
@@ -14,14 +14,18 @@
         $scope.lang = $translate.use();
 
         $scope.resource.$promise.then(function(resource) {
-          $scope.refAttrs = ReferenceAttributeList.query({
-            schemeId: resource.scheme.id,
-            classId: resource.type.id
-          });
+          for ( var attrId in resource.referrers) {
+            resource.referrers[attrId] = ResourceReferrerList.query({
+              schemeId: resource.type.scheme.id,
+              typeId: resource.type.id,
+              id: resource.id,
+              attributeId: attrId
+            });
+          }
         });
 
-        $scope.isEmpty = function (obj) {
-          for (var i in obj) {
+        $scope.isEmpty = function(obj) {
+          for ( var i in obj) {
             if (obj.hasOwnProperty(i)) {
               return false;
             }

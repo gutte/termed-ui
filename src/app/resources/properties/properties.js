@@ -15,7 +15,7 @@
 
         $scope.resource.$promise.then(function(resource) {
           $scope.textAttrs = TextAttributeList.query({
-            schemeId: resource.scheme.id,
+            schemeId: resource.type.scheme.id,
             classId: resource.type.id
           });
         });
@@ -35,7 +35,7 @@
 
         $scope.resource.$promise.then(function(resource) {
           TextAttributeList.query({
-            schemeId: resource.scheme.id,
+            schemeId: resource.type.scheme.id,
             classId: resource.type.id
           }, function(textAttrs) {
             $scope.textAttrs = textAttrs;

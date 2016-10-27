@@ -1,10 +1,10 @@
 <ol class="breadcrumb">
     <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-    <li><a ng-href="#/schemes/{{resource.scheme.id}}/resources">
-        {{resource.scheme.properties.prefLabel | localizeValue}}
+    <li><a ng-href="#/schemes/{{resource.type.scheme.id}}/resources">
+        {{scheme.properties.prefLabel | localizeValue}}
     </a></li>
     <li>
-        <a ng-href="#/schemes/{{resource.scheme.id}}/classes/{{resource.type.id}}/resources/{{resource.id}}">
+        <a ng-href="#/schemes/{{resource.type.scheme.id}}/classes/{{resource.type.id}}/resources/{{resource.id}}">
             {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
         </a>
     </li>
@@ -32,7 +32,7 @@
 </div>
 
 <h1 class="page-header">
-    <small>{{resource.type.properties.prefLabel | localizeValue}}</small>
+    <small>{{type.properties.prefLabel | localizeValue}}</small>
     <br>
     {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
 </h1>

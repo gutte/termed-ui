@@ -41,9 +41,19 @@ angular.module('termed.schemes', ['ngRoute', 'termed.rest', 'termed.schemes.prop
     });
   };
 
+  var schemeIndex = {};
+
   $scope.schemes = SchemeList.query({
     orderBy: 'prefLabel.fi'
+  }, function(schemes) {
+    schemes.forEach(function(s) {
+      schemeIndex[s.id] = s;
+    });
   });
+
+  $scope.schemeById = function(schemeId) {
+    return schemeIndex[schemeId];
+  }
 
   $scope.newScheme = function() {
     SchemeList.save({
@@ -64,19 +74,25 @@ angular.module('termed.schemes', ['ngRoute', 'termed.rest', 'termed.schemes.prop
 
 })
 
-.controller('SchemeEditCtrl', function($scope, $routeParams, $location, $translate, Scheme, PropertyList) {
+.controller('SchemeEditCtrl', function($scope, $routeParams, $location, $translate, Scheme, ClassList, PropertyList) {
 
   $scope.lang = $translate.use();
 
   $scope.scheme = Scheme.get({
     schemeId: $routeParams.schemeId
+  }, function(scheme) {
+    $scope.classes = ClassList.query({ schemeId: scheme.id });
   });
 
   $scope.properties = PropertyList.query();
 
   $scope.save = function() {
     $scope.scheme.$save(function() {
-      $location.path('/schemes/' + $routeParams.schemeId + '/resources');
+      ClassList.save({ schemeId: $routeParams.schemeId, batch: true }, $scope.classes, function() {
+        $location.path('/schemes/' + $routeParams.schemeId + '/resources');
+      }, function(error) {
+        $scope.error = error;
+      });
     }, function(error) {
       $scope.error = error;
     });

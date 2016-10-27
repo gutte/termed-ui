@@ -34,8 +34,7 @@
                     <thead>
                     <tr>
                         <th>{{'label' | translate | capitalize}}</th>
-                        <th width="25%">{{'type' | translate | capitalize}}</th>
-                        <th width="25%">{{'source' | translate | capitalize}}</th>
+                        <th width="40%">{{'source' | translate | capitalize}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,17 +46,10 @@
                         </td>
                         <td>
                             <small>
-                                <a ng-href="#/schemes/{{resource.type.scheme.id}}/resources?q=type.id:{{resource.type.id}}"
-                                   class="text-muted">
-                                    {{resource.type.properties.prefLabel | localizeValue}}
-                                </a>
-                            </small>
-                        </td>
-                        <td>
-                            <small>
                                 <a ng-href="#/schemes/{{resource.type.scheme.id}}/resources"
                                    class="text-muted">
-                                    {{resource.scheme.properties.prefLabel | localizeValue}}
+                                    {{schemeById(resource.type.scheme.id).properties.prefLabel |
+                                    localizeValue}}
                                 </a>
                             </small>
                         </td>

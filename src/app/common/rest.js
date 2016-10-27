@@ -10,6 +10,10 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/schemes/:schemeId');
 })
 
+.factory('ClassList', function($resource) {
+  return $resource('api/schemes/:schemeId/classes');
+})
+
 .factory('Class', function($resource) {
   return $resource('api/schemes/:schemeId/classes/:classId');
 })
@@ -32,6 +36,14 @@ angular.module('termed.rest', ['ngResource'])
 
 .factory('Resource', function($resource) {
   return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id', null, { 'update': { method : 'PUT' }});
+})
+
+.factory('ResourceReferenceList', function($resource) {
+  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/references/:attributeId');
+})
+
+.factory('ResourceReferrerList', function($resource) {
+  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/referrers/:attributeId');
 })
 
 .factory('ResourceTrees', function($resource) {

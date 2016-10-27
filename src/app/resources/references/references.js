@@ -3,7 +3,7 @@
 
   angular.module('termed.resources.references', ['pascalprecht.translate', 'termed.rest'])
 
-  .directive('thlResourceReferences', function($translate, ReferenceAttributeList) {
+  .directive('thlResourceReferences', function($translate, ReferenceAttributeList, ResourceReferenceList) {
     return {
       restrict: 'E',
       scope: {
@@ -14,9 +14,19 @@
         $scope.lang = $translate.use();
 
         $scope.resource.$promise.then(function(resource) {
-          $scope.refAttrs = ReferenceAttributeList.query({
-            schemeId: resource.scheme.id,
+          ReferenceAttributeList.query({
+            schemeId: resource.type.scheme.id,
             classId: resource.type.id
+          }, function(refAttrs) {
+            $scope.refAttrs = refAttrs;
+            for (var i = 0; i < refAttrs.length; i++) {
+              resource.references[refAttrs[i].id] = ResourceReferenceList.query({
+                schemeId: resource.type.scheme.id,
+                typeId: resource.type.id,
+                id: resource.id,
+                attributeId: refAttrs[i].id
+              });
+            }
           });
         });
       }
@@ -35,7 +45,7 @@
 
         $scope.resource.$promise.then(function(resource) {
           $scope.refAttrs = ReferenceAttributeList.query({
-            schemeId: resource.scheme.id,
+            schemeId: resource.type.scheme.id,
             classId: resource.type.id
           });
         });
@@ -55,7 +65,7 @@
           var lang = $translate.use();
 
           if (properties.prefLabel && properties.prefLabel.length > 0) {
-            for (var i=0; i<properties.prefLabel.length; i++) {
+            for (var i = 0; i < properties.prefLabel.length; i++) {
               if (properties.prefLabel[i].lang == lang) {
                 return properties.prefLabel[i].value;
               }

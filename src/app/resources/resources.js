@@ -22,7 +22,7 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
   });
 })
 
-.controller('ResourceListCtrl', function($scope, $route, $location, $routeParams, $translate, Scheme, SchemeResourceList, ResourceList, Resource) {
+.controller('ResourceListCtrl', function($scope, $route, $location, $routeParams, $translate, Scheme, SchemeResourceList, ResourceList, Resource, ClassList) {
 
   $scope.lang = $translate.use();
 
@@ -32,6 +32,20 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
   $scope.scheme = Scheme.get({
     schemeId: $routeParams.schemeId
   });
+
+  var classIndex = {};
+
+  $scope.classes = ClassList.query({
+    schemeId: $routeParams.schemeId
+  }, function(classes) {
+    classes.forEach(function(c) {
+      classIndex[c.id] = c;
+    });
+  });
+
+  $scope.classById = function(classId) {
+    return classIndex[classId];
+  }
 
   $scope.loadMoreResults = function() {
     $scope.max += 50;
@@ -58,7 +72,7 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
       scheme: $scope.scheme,
       type: type
     }, function(resource) {
-      $location.path('/schemes/' + resource.scheme.id + '/classes/' + resource.type.id + '/resources/' + resource.id + '/edit');
+      $location.path('/schemes/' + resource.type.scheme.id + '/classes/' + resource.type.id + '/resources/' + resource.id + '/edit');
     }, function(error) {
       $scope.error = error;
     });
@@ -68,7 +82,7 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
 
 })
 
-.controller('ResourceCtrl', function($scope, $routeParams, $location, $translate, Resource, ResourcePaths, ResourceList, Class) {
+.controller('ResourceCtrl', function($scope, $routeParams, $location, $translate, Resource, ResourcePaths, ResourceList, Class, Scheme) {
 
   $scope.lang = $translate.use();
 
@@ -82,9 +96,13 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
     schemeId: $routeParams.schemeId,
     classId: $routeParams.typeId
   });
+
+  $scope.scheme = Scheme.get({
+    schemeId: $routeParams.schemeId
+  });
 })
 
-.controller('ResourceEditCtrl', function($scope, $routeParams, $location, $translate, Resource) {
+.controller('ResourceEditCtrl', function($scope, $routeParams, $location, $translate, Resource, Class, Scheme) {
 
   $scope.lang = $translate.use();
 
@@ -94,13 +112,22 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
     id: $routeParams.id
   });
 
+  $scope.type = Class.get({
+    schemeId: $routeParams.schemeId,
+    classId: $routeParams.typeId
+  });
+
+  $scope.scheme = Scheme.get({
+    schemeId: $routeParams.schemeId
+  });
+
   $scope.save = function() {
     $scope.resource.$update({
       schemeId: $routeParams.schemeId,
       typeId: $routeParams.typeId,
       id: $routeParams.id
     }, function(resource) {
-      $location.path('/schemes/' + resource.scheme.id + '/classes/' + resource.type.id + '/resources/' + resource.id);
+      $location.path('/schemes/' + resource.type.scheme.id + '/classes/' + resource.type.id + '/resources/' + resource.id);
     }, function(error) {
       $scope.error = error;
     });
@@ -160,7 +187,7 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
                 var resourceId;
 
                 if (node.id === '#') {
-                  resourceSchemeId = scope.resource.scheme.id;
+                  resourceSchemeId = scope.resource.type.scheme.id;
                   resourceTypeId = scope.resource.type.id;
                   resourceId = scope.resource.id;
                 } else {
