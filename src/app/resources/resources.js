@@ -45,7 +45,7 @@ angular.module('termed.resources', ['ngRoute', 'termed.rest', 'termed.resources.
 
   $scope.classById = function(classId) {
     return classIndex[classId];
-  }
+  };
 
   $scope.loadMoreResults = function() {
     $scope.max += 50;

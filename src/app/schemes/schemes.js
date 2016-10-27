@@ -53,7 +53,7 @@ angular.module('termed.schemes', ['ngRoute', 'termed.rest', 'termed.schemes.prop
 
   $scope.schemeById = function(schemeId) {
     return schemeIndex[schemeId];
-  }
+  };
 
   $scope.newScheme = function() {
     SchemeList.save({
