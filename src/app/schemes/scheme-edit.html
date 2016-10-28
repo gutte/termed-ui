@@ -321,7 +321,7 @@
                     <label>{{'range' | translate | capitalize}}</label>
 
                     <select class="form-control" ng-model="referenceAttribute.range.id">
-                        <option ng-repeat="cls in scheme.classes" value="{{cls.id}}">
+                        <option ng-repeat="cls in classes" value="{{cls.id}}">
                             {{cls.properties.prefLabel | localizeValue}}
                         </option>
                     </select>
