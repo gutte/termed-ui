@@ -34,6 +34,10 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/schemes/:schemeId/resources');
 })
 
+.factory('TypeResourceList', function($resource) {
+  return $resource('api/schemes/:schemeId/classes/:typeId/resources');
+})
+
 .factory('Resource', function($resource) {
   return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id', null, { 'update': { method : 'PUT' }});
 })

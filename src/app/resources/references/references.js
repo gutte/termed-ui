@@ -53,7 +53,7 @@
     };
   })
 
-  .directive('thlSelectResource', function($q, $timeout, $translate, Resource, ResourceList) {
+  .directive('thlSelectResource', function($q, $timeout, $translate, Resource, TypeResourceList) {
     return {
       scope: {
         'ngModel': "=",
@@ -80,7 +80,7 @@
           allowClear: true,
           multiple: !!attrs.multiple,
           query: function(query) {
-            ResourceList.query({
+            TypeResourceList.query({
               schemeId: scope.refAttr.range.scheme.id,
               typeId: scope.refAttr.range.id,
               query: query.term

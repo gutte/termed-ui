@@ -109,10 +109,10 @@ angular.module('termed.schemes', ['ngRoute', 'termed.rest', 'termed.schemes.prop
   };
 
   $scope.newClass = function() {
-    if (!$scope.scheme.classes) {
-      $scope.scheme.classes = [];
+    if (!$scope.classes) {
+      $scope.classes = [];
     }
-    $scope.scheme.classes.unshift({
+    $scope.classes.unshift({
       id: "NewClass",
       properties: {
         prefLabel: [
@@ -144,8 +144,8 @@ angular.module('termed.schemes', ['ngRoute', 'termed.rest', 'termed.schemes.prop
   };
 
   $scope.removeClass = function(cls) {
-    var i = $scope.scheme.classes.indexOf(cls);
-    $scope.scheme.classes.splice(i, 1);
+    var i = $scope.classes.indexOf(cls);
+    $scope.classes.splice(i, 1);
   };
 
   $scope.newTextAttribute = function(cls) {
