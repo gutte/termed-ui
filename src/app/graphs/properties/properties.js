@@ -1,14 +1,14 @@
 (function (angular) { 'use strict';
 
-angular.module('termed.schemes.properties', ['pascalprecht.translate', 'termed.rest'])
+angular.module('termed.graphs.properties', ['pascalprecht.translate', 'termed.rest'])
 
-.directive('thlSchemePropertiesEdit', function($translate, PropertyList) {
+.directive('thlGraphPropertiesEdit', function($translate, PropertyList) {
   return {
     restrict: 'E',
     scope: {
       propertyMap: '='
     },
-    templateUrl: 'app/schemes/properties/properties-edit.html',
+    templateUrl: 'app/graphs/properties/properties-edit.html',
     controller: function($scope) {
 
       $scope.properties = PropertyList.query();

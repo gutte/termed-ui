@@ -2,60 +2,60 @@
 
 angular.module('termed.rest', ['ngResource'])
 
-.factory('SchemeList', function($resource) {
-  return $resource('api/schemes');
+.factory('GraphList', function($resource) {
+  return $resource('api/graphs');
 })
 
-.factory('Scheme', function($resource) {
-  return $resource('api/schemes/:schemeId');
+.factory('Graph', function($resource) {
+  return $resource('api/graphs/:graphId');
 })
 
-.factory('ClassList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes');
+.factory('TypeList', function($resource) {
+  return $resource('api/graphs/:graphId/types');
 })
 
-.factory('Class', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:classId');
+.factory('Type', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId');
 })
 
 .factory('TextAttributeList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:classId/textAttributes');
+  return $resource('api/graphs/:graphId/types/:typeId/textAttributes');
 })
 
 .factory('ReferenceAttributeList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:classId/referenceAttributes');
+  return $resource('api/graphs/:graphId/types/:typeId/referenceAttributes');
 })
 
-.factory('ResourceList', function($resource) {
-  return $resource('api/resources');
+.factory('NodeList', function($resource) {
+  return $resource('api/nodes');
 })
 
-.factory('SchemeResourceList', function($resource) {
-  return $resource('api/schemes/:schemeId/resources');
+.factory('GraphNodeList', function($resource) {
+  return $resource('api/graphs/:graphId/nodes');
 })
 
-.factory('TypeResourceList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources');
+.factory('TypeNodeList', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes');
 })
 
-.factory('Resource', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id', null, { 'update': { method : 'PUT' }});
+.factory('Node', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id', null, { 'update': { method : 'PUT' }});
 })
 
-.factory('ResourceReferenceList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/references/:attributeId');
+.factory('NodeReferenceList', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/references/:attributeId');
 })
 
-.factory('ResourceReferrerList', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/referrers/:attributeId');
+.factory('NodeReferrerList', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/referrers/:attributeId');
 })
 
-.factory('ResourceTrees', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/trees/:attributeId');
+.factory('NodeTrees', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/trees/:attributeId');
 })
 
-.factory('ResourcePaths', function($resource) {
-  return $resource('api/schemes/:schemeId/classes/:typeId/resources/:id/paths/:attributeId');
+.factory('NodePaths', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/paths/:attributeId');
 })
 
 .factory('PropertyList', function($resource) {

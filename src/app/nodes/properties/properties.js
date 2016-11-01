@@ -1,47 +1,47 @@
 (function(angular) {
   'use strict';
 
-  angular.module('termed.resources.properties', ['pascalprecht.translate', 'termed.rest'])
+  angular.module('termed.nodes.properties', ['pascalprecht.translate', 'termed.rest'])
 
-  .directive('thlResourceProperties', function($translate, TextAttributeList) {
+  .directive('thlNodeProperties', function($translate, TextAttributeList) {
     return {
       restrict: 'E',
       scope: {
-        resource: '='
+        node: '='
       },
-      templateUrl: 'app/resources/properties/properties.html',
+      templateUrl: 'app/nodes/properties/properties.html',
       controller: function($scope) {
         $scope.lang = $translate.use();
 
-        $scope.resource.$promise.then(function(resource) {
+        $scope.node.$promise.then(function(node) {
           $scope.textAttrs = TextAttributeList.query({
-            schemeId: resource.type.scheme.id,
-            classId: resource.type.id
+            graphId: node.type.graph.id,
+            typeId: node.type.id
           });
         });
       }
     };
   })
 
-  .directive('thlResourcePropertiesEdit', function($translate, TextAttributeList) {
+  .directive('thlNodePropertiesEdit', function($translate, TextAttributeList) {
     return {
       restrict: 'E',
       scope: {
-        resource: '='
+        node: '='
       },
-      templateUrl: 'app/resources/properties/properties-edit.html',
+      templateUrl: 'app/nodes/properties/properties-edit.html',
       controller: function($scope) {
         $scope.lang = $translate.use();
 
-        $scope.resource.$promise.then(function(resource) {
+        $scope.node.$promise.then(function(node) {
           TextAttributeList.query({
-            schemeId: resource.type.scheme.id,
-            classId: resource.type.id
+            graphId: node.type.graph.id,
+            typeId: node.type.id
           }, function(textAttrs) {
             $scope.textAttrs = textAttrs;
 
             // start watching properties for changes and update form accordingly
-            $scope.$watch('resource.properties', function() {
+            $scope.$watch('node.properties', function() {
               ensureProperties();
             }, true);
           });
@@ -49,16 +49,16 @@
 
         function ensureProperties() {
           $scope.textAttrs.forEach(function(textAttr) {
-            ensureProperty($scope.resource.properties, textAttr.id, textAttr.regex);
+            ensureProperty($scope.node.properties, textAttr.id, textAttr.regex);
           });
         }
 
-        function ensureProperty(resourceProperties, textAttrId, textAttrRegex) {
-          if (!resourceProperties[textAttrId]) {
-            resourceProperties[textAttrId] = [];
+        function ensureProperty(nodeProperties, textAttrId, textAttrRegex) {
+          if (!nodeProperties[textAttrId]) {
+            nodeProperties[textAttrId] = [];
           }
 
-          var values = resourceProperties[textAttrId];
+          var values = nodeProperties[textAttrId];
 
           // remove all empty values (not including the last one)
           for (var i = 0; i < values.length - 1; i++) {

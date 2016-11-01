@@ -1,7 +1,6 @@
 <div class="form-group" ng-repeat="property in properties">
     <div ng-if="propertyMap[property.id] && ensureProperty(propertyMap, property.id)">
-        <label>{{property.properties.prefLabel | localizeValue |
-            capitalize}}</label>
+        <label>{{property.properties.prefLabel | localizeValue | capitalize}}</label>
 
         <div ng-repeat="langValue in propertyMap[property.id]">
             <input type="text" class="form-control pull-left lang-input"

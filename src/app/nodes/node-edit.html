@@ -1,11 +1,11 @@
 <ol class="breadcrumb">
     <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-    <li><a ng-href="#/schemes/{{resource.type.scheme.id}}/resources">
-        {{scheme.properties.prefLabel | localizeValue}}
+    <li><a ng-href="#/graphs/{{node.type.graph.id}}/nodes">
+        {{graph.properties.prefLabel | localizeValue}}
     </a></li>
     <li>
-        <a ng-href="#/schemes/{{resource.type.scheme.id}}/classes/{{resource.type.id}}/resources/{{resource.id}}">
-            {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+        <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+            {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
         </a>
     </li>
     <li class="active">{{'edit' | translate}}</li>
@@ -34,22 +34,22 @@
 <h1 class="page-header">
     <small>{{type.properties.prefLabel | localizeValue}}</small>
     <br>
-    {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+    {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
 </h1>
 
 <div class="row text-muted page-header-info">
     <div class="col-sm-6">
         <small>
             {{'updated' | translate | capitalize}}
-            {{resource.lastModifiedDate | date:'d.M.yyyy HH:mm:ss'}} /
-            {{resource.lastModifiedBy}}
+            {{node.lastModifiedDate | date:'d.M.yyyy HH:mm:ss'}} /
+            {{node.lastModifiedBy}}
         </small>
     </div>
     <div class="col-sm-6 text-right">
         <small>
             {{'added' | translate | capitalize}}
-            {{resource.createdDate | date:'d.M.yyyy HH:mm:ss'}} /
-            {{resource.createdBy}}
+            {{node.createdDate | date:'d.M.yyyy HH:mm:ss'}} /
+            {{node.createdBy}}
         </small>
     </div>
 </div>
@@ -59,18 +59,18 @@
     <div class="form-group">
         <label>URI</label>
 
-        <input type="text" class="form-control" ng-model="resource.uri">
+        <input type="text" class="form-control" ng-model="node.uri">
     </div>
 
     <div class="form-group">
         <label>{{'code' | translate | capitalize}}</label>
 
-        <input type="text" class="form-control" ng-model="resource.code">
+        <input type="text" class="form-control" ng-model="node.code">
     </div>
 
-    <thl-resource-properties-edit resource="resource"></thl-resource-properties-edit>
+    <thl-node-properties-edit node="node"></thl-node-properties-edit>
 
-    <thl-resource-references-edit resource="resource"></thl-resource-references-edit>
+    <thl-node-references-edit node="node"></thl-node-references-edit>
 
 </form>
 
@@ -79,5 +79,5 @@
 <span class="label label-default" ng-click="showJson = !showJson">json</span>
 
 <div ng-show="showJson">
-    <pre>{{resource | json}}</pre>
+    <pre>{{node | json}}</pre>
 </div>

@@ -1,10 +1,10 @@
 (function (angular) { 'use strict';
 
-angular.module('termed', ['ngRoute', 'pascalprecht.translate', 'termed.rest', 'termed.filters', 'termed.directives', 'termed.translations', 'termed.schemes', 'termed.resources'])
+angular.module('termed', ['ngRoute', 'pascalprecht.translate', 'termed.rest', 'termed.filters', 'termed.directives', 'termed.translations', 'termed.graphs', 'termed.nodes'])
 
 .config(function($routeProvider) {
   $routeProvider.otherwise({
-    redirectTo: '/schemes'
+    redirectTo: '/graphs'
   });
 })
 

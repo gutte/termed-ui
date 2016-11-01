@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
     <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-    <li><a ng-href="#/schemes/{{scheme.id}}/concepts">
-        {{scheme.properties.prefLabel | localizeValue}}
+    <li><a ng-href="#/graphs/{{graph.id}}/concepts">
+        {{graph.properties.prefLabel | localizeValue}}
     </a></li>
     <li class="active">{{'edit' | translate}}</li>
 </ol>
@@ -27,56 +27,56 @@
 </div>
 
 <h1 class="page-header">
-    {{scheme.properties.prefLabel | localizeValue}}
+    {{graph.properties.prefLabel | localizeValue}}
 </h1>
 
 <form role="form">
 
     <div class="form-group">
         <label>{{'code' | translate | capitalize}}</label>
-        <input type="text" class="form-control" ng-model="scheme.code">
+        <input type="text" class="form-control" ng-model="graph.code">
     </div>
 
     <div class="form-group">
         <label>URI</label>
-        <input type="text" class="form-control" ng-model="scheme.uri">
+        <input type="text" class="form-control" ng-model="graph.uri">
     </div>
 
-    <thl-scheme-properties-edit property-map="scheme.properties"></thl-scheme-properties-edit>
+    <thl-graph-properties-edit property-map="graph.properties"></thl-graph-properties-edit>
 
 </form>
 
 <hr>
 
-<h3>{{'classes' | translate | capitalize}}</h3>
+<h3>{{'types' | translate | capitalize}}</h3>
 
-<button class="btn btn-default btn-sm" ng-click="newClass(class)">
+<button class="btn btn-default btn-sm" ng-click="newType(type)">
     <span class="glyphicon glyphicon-plus"></span>
-    {{'addNewClass' | translate | capitalize}}
+    {{'addNewType' | translate | capitalize}}
 </button>
 
 <br>
 <br>
 
-<div thl-sortable elements="classes">
-    <div ng-repeat="class in classes">
+<div thl-sortable elements="types">
+    <div ng-repeat="type in types">
 
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title handle">
-                    {{'class' | translate | capitalize}}: {{class.properties.prefLabel |
+                    {{'type' | translate | capitalize}}: {{type.properties.prefLabel |
                     localizeValue}}
                 </h3>
                 <div class="row" style="margin-top: 10px">
                     <div class="col-xs-6">
-                        <button class="btn btn-default btn-xs" ng-click="selectClass(class)"
-                                data-toggle="modal" data-target="#classModal">
+                        <button class="btn btn-default btn-xs" ng-click="selectType(type)"
+                                data-toggle="modal" data-target="#typeModal">
                             <span class="glyphicon glyphicon-edit"></span>
                             {{'edit' | translate | capitalize}}
                         </button>
                     </div>
                     <div class="col-xs-6 text-right">
-                        <button class="btn btn-danger btn-xs" ng-click="removeClass(class)">
+                        <button class="btn btn-danger btn-xs" ng-click="removeType(type)">
                             <span class="glyphicon glyphicon-trash"></span>
                             {{'remove' | translate | capitalize}}
                         </button>
@@ -95,21 +95,21 @@
                                 </th>
                             </tr>
                             </thead>
-                            <tbody thl-sortable elements="class.textAttributes">
-                            <tr ng-repeat="textAttribute in class.textAttributes">
+                            <tbody thl-sortable elements="type.textAttributes">
+                            <tr ng-repeat="textAttribute in type.textAttributes">
                                 <td class="handle">{{textAttribute.properties.prefLabel |
                                     localizeValue}}
                                 </td>
                                 <td class="text-right">
                                     <button class="btn btn-default btn-xs"
-                                            ng-click="selectClass(class);selectTextAttribute(textAttribute)"
+                                            ng-click="selectType(type);selectTextAttribute(textAttribute)"
                                             data-toggle="modal"
                                             data-target="#textAttributeModal">
                                         <span class="glyphicon glyphicon-edit"></span>
                                         {{'edit' | translate | capitalize}}
                                     </button>
                                     <button class="btn btn-danger btn-xs"
-                                            ng-click="removeTextAttribute(class, textAttribute)">
+                                            ng-click="removeTextAttribute(type, textAttribute)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         {{'remove' | translate | capitalize}}
                                     </button>
@@ -120,7 +120,7 @@
                             <tr>
                                 <th colspan="2">
                                     <button class="btn btn-default btn-xs"
-                                            ng-click="newTextAttribute(class)">
+                                            ng-click="newTextAttribute(type)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                         {{'addNewTextAttribute' | translate | capitalize}}
                                     </button>
@@ -140,21 +140,21 @@
                             </thead>
                             <tbody>
 
-                            <tbody thl-sortable elements="class.referenceAttributes">
-                            <tr ng-repeat="referenceAttribute in class.referenceAttributes">
+                            <tbody thl-sortable elements="type.referenceAttributes">
+                            <tr ng-repeat="referenceAttribute in type.referenceAttributes">
                                 <td class="handle">
                                     {{referenceAttribute.properties.prefLabel | localizeValue}}
                                 </td>
                                 <td class="text-right">
                                     <button class="btn btn-default btn-xs"
-                                            ng-click="selectClass(class);selectReferenceAttribute(referenceAttribute)"
+                                            ng-click="selectType(type);selectReferenceAttribute(referenceAttribute)"
                                             data-toggle="modal"
                                             data-target="#referenceAttributeModal">
                                         <span class="glyphicon glyphicon-edit"></span>
                                         {{'edit' | translate | capitalize}}
                                     </button>
                                     <button class="btn btn-danger btn-xs"
-                                            ng-click="removeReferenceAttribute(class, referenceAttribute)">
+                                            ng-click="removeReferenceAttribute(type, referenceAttribute)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                         {{'remove' | translate | capitalize}}
                                     </button>
@@ -165,7 +165,7 @@
                             <tr>
                                 <th colspan="2">
                                     <button class="btn btn-default btn-xs"
-                                            ng-click="newReferenceAttribute(class)">
+                                            ng-click="newReferenceAttribute(type)">
                                         <span class="glyphicon glyphicon-plus"></span>
                                         {{'addNewReferenceAttribute' | translate | capitalize}}
                                     </button>
@@ -183,20 +183,20 @@
 </div>
 
 
-<div class="modal fade" id="classModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="typeModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
-                <h4 class="modal-title" id="classModalLabel">
+                <h4 class="modal-title" id="typeModalLabel">
                     <small>
-                        {{scheme.properties.prefLabel | localizeValue}}
+                        {{graph.properties.prefLabel | localizeValue}}
                     </small>
                     <br>
-                    {{'class' | translate | capitalize}}:
-                    {{cls.properties.prefLabel | localizeValue}}
+                    {{'type' | translate | capitalize}}:
+                    {{type.properties.prefLabel | localizeValue}}
                 </h4>
             </div>
             <div class="modal-body">
@@ -204,7 +204,7 @@
 
                 <div class="form-group has-warning has-feedback">
                     <label>ID</label>
-                    <input type="text" class="form-control" ng-model="cls.id">
+                    <input type="text" class="form-control" ng-model="type.id">
                     <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
                     <span class="help-block">{{'warnIdChange' | translate}}</span>
                 </div>
@@ -212,11 +212,11 @@
                 <div class="form-group">
                     <label>URI</label>
 
-                    <input type="text" class="form-control" ng-model="cls.uri">
+                    <input type="text" class="form-control" ng-model="type.uri">
                 </div>
 
-                <thl-scheme-properties-edit property-map="cls.properties">
-                </thl-scheme-properties-edit>
+                <thl-graph-properties-edit property-map="type.properties">
+                </thl-graph-properties-edit>
 
                 <!-- /body -->
             </div>
@@ -238,8 +238,8 @@
                 </button>
                 <h4 class="modal-title" id="textAttributeModalLabel">
                     <small>
-                        {{scheme.properties.prefLabel | localizeValue}} &gt;
-                        {{cls.properties.prefLabel | localizeValue}}
+                        {{graph.properties.prefLabel | localizeValue}} &gt;
+                        {{type.properties.prefLabel | localizeValue}}
                     </small>
                     <br>
                     {{'textAttribute' | translate | capitalize}}:
@@ -268,8 +268,8 @@
                     <input type="text" class="form-control" ng-model="textAttribute.regex">
                 </div>
 
-                <thl-scheme-properties-edit property-map="textAttribute.properties">
-                </thl-scheme-properties-edit>
+                <thl-graph-properties-edit property-map="textAttribute.properties">
+                </thl-graph-properties-edit>
 
                 <!-- /body -->
             </div>
@@ -293,8 +293,8 @@
                 </button>
                 <h4 class="modal-title" id="referenceAttributeModalLabel">
                     <small>
-                        {{scheme.properties.prefLabel | localizeValue}} &gt;
-                        {{cls.properties.prefLabel | localizeValue}}
+                        {{graph.properties.prefLabel | localizeValue}} &gt;
+                        {{type.properties.prefLabel | localizeValue}}
                     </small>
                     <br>
                     {{'referenceAttribute' | translate | capitalize}}:
@@ -321,14 +321,14 @@
                     <label>{{'range' | translate | capitalize}}</label>
 
                     <select class="form-control" ng-model="referenceAttribute.range.id">
-                        <option ng-repeat="cls in classes" value="{{cls.id}}">
-                            {{cls.properties.prefLabel | localizeValue}}
+                        <option ng-repeat="type in types" value="{{type.id}}">
+                            {{type.properties.prefLabel | localizeValue}}
                         </option>
                     </select>
                 </div>
 
-                <thl-scheme-properties-edit property-map="referenceAttribute.properties">
-                </thl-scheme-properties-edit>
+                <thl-graph-properties-edit property-map="referenceAttribute.properties">
+                </thl-graph-properties-edit>
 
                 <!-- /body -->
             </div>
@@ -349,5 +349,5 @@
 <span class="label label-default" ng-click="showJson = !showJson">json</span>
 
 <div ng-show="showJson">
-    <pre>{{scheme | json}}</pre>
+    <pre>{{graph | json}}</pre>
 </div>

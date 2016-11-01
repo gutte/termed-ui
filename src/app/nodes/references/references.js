@@ -1,29 +1,29 @@
 (function(angular) {
   'use strict';
 
-  angular.module('termed.resources.references', ['pascalprecht.translate', 'termed.rest'])
+  angular.module('termed.nodes.references', ['pascalprecht.translate', 'termed.rest'])
 
-  .directive('thlResourceReferences', function($translate, ReferenceAttributeList, ResourceReferenceList) {
+  .directive('thlNodeReferences', function($translate, ReferenceAttributeList, NodeReferenceList) {
     return {
       restrict: 'E',
       scope: {
-        resource: '='
+        node: '='
       },
-      templateUrl: 'app/resources/references/references.html',
+      templateUrl: 'app/nodes/references/references.html',
       controller: function($scope) {
         $scope.lang = $translate.use();
 
-        $scope.resource.$promise.then(function(resource) {
+        $scope.node.$promise.then(function(node) {
           ReferenceAttributeList.query({
-            schemeId: resource.type.scheme.id,
-            classId: resource.type.id
+            graphId: node.type.graph.id,
+            typeId: node.type.id
           }, function(refAttrs) {
             $scope.refAttrs = refAttrs;
             for (var i = 0; i < refAttrs.length; i++) {
-              resource.references[refAttrs[i].id] = ResourceReferenceList.query({
-                schemeId: resource.type.scheme.id,
-                typeId: resource.type.id,
-                id: resource.id,
+              node.references[refAttrs[i].id] = NodeReferenceList.query({
+                graphId: node.type.graph.id,
+                typeId: node.type.id,
+                id: node.id,
                 attributeId: refAttrs[i].id
               });
             }
@@ -33,27 +33,27 @@
     };
   })
 
-  .directive('thlResourceReferencesEdit', function($translate, ReferenceAttributeList, ResourceList) {
+  .directive('thlNodeReferencesEdit', function($translate, ReferenceAttributeList, NodeList) {
     return {
       restrict: 'E',
       scope: {
-        resource: '='
+        node: '='
       },
-      templateUrl: 'app/resources/references/references-edit.html',
+      templateUrl: 'app/nodes/references/references-edit.html',
       controller: function($scope) {
         $scope.lang = $translate.use();
 
-        $scope.resource.$promise.then(function(resource) {
+        $scope.node.$promise.then(function(node) {
           $scope.refAttrs = ReferenceAttributeList.query({
-            schemeId: resource.type.scheme.id,
-            classId: resource.type.id
+            graphId: node.type.graph.id,
+            typeId: node.type.id
           });
         });
       }
     };
   })
 
-  .directive('thlSelectResource', function($q, $timeout, $translate, Resource, TypeResourceList) {
+  .directive('thlSelectNode', function($q, $timeout, $translate, Node, TypeNodeList) {
     return {
       scope: {
         'ngModel': "=",
@@ -80,8 +80,8 @@
           allowClear: true,
           multiple: !!attrs.multiple,
           query: function(query) {
-            TypeResourceList.query({
-              schemeId: scope.refAttr.range.scheme.id,
+            TypeNodeList.query({
+              graphId: scope.refAttr.range.graph.id,
               typeId: scope.refAttr.range.id,
               query: query.term
             }, function(results) {
@@ -132,8 +132,8 @@
           if (attrs.multiple) {
             var promiseGet = function(idObject) {
               var d = $q.defer();
-              Resource.get({
-                schemeId: scope.refAttr.range.scheme.id,
+              Node.get({
+                graphId: scope.refAttr.range.graph.id,
                 typeId: scope.refAttr.range.id,
                 id: idObject.id
               }, function(result) {
@@ -147,17 +147,17 @@
               promises.push(promiseGet(ngModel[i]));
             }
 
-            // wait for all Resource.gets
+            // wait for all Node.gets
             $q.all(promises).then(function(data) {
               elem.select2('data', data);
             });
           } else {
-            Resource.get({
-              schemeId: scope.refAttr.range.scheme.id,
+            Node.get({
+              graphId: scope.refAttr.range.graph.id,
               typeId: scope.refAttr.range.id,
               id: ngModel.id
-            }, function(resource) {
-              elem.select2('data', resource);
+            }, function(node) {
+              elem.select2('data', node);
             });
           }
         }, true);

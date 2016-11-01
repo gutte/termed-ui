@@ -1,13 +1,13 @@
-<div ng-if="!isEmpty(resource.referrers)">
+<div ng-if="!isEmpty(node.referrers)">
 
     <hr>
 
     <dl class="text-muted">
         <dt>{{'referrers' | translate | capitalize}}</dt>
         <dd>
-            <div ng-repeat="(k, rs) in resource.referrers">
+            <div ng-repeat="(k, rs) in node.referrers">
                 <div ng-repeat="r in rs">
-                    <a ng-href="#/schemes/{{r.type.scheme.id}}/classes/{{r.type.id}}/resources/{{r.id}}">
+                    <a ng-href="#/graphs/{{r.type.graph.id}}/types/{{r.type.id}}/nodes/{{r.id}}">
                         &larr;
                         {{r.properties.prefLabel | localizeValue:('unnamed' | translate)}}
                     </a>

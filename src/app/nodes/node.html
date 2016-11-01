@@ -1,10 +1,10 @@
 <ol class="breadcrumb">
     <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-    <li><a ng-href="#/schemes/{{resource.type.scheme.id}}/resources">
-        {{scheme.properties.prefLabel | localizeValue}}
+    <li><a ng-href="#/graphs/{{node.type.graph.id}}/nodes">
+        {{graph.properties.prefLabel | localizeValue}}
     </a></li>
     <li class="active">
-        {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+        {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
     </li>
 </ol>
 
@@ -15,7 +15,7 @@
                 {{'hierarchy' | translate | capitalize}}
             </div>
             <div style="overflow:hidden" class="panel-body">
-                <thl-resource-tree resource="resource" type="type"></thl-resource-tree>
+                <thl-node-tree node="node" type="type"></thl-node-tree>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 
         <div>
             <a class="btn btn-sm btn-default"
-               ng-href="#/schemes/{{resource.type.scheme.id}}/classes/{{resource.type.id}}/resources/{{resource.id}}/edit">
+               ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}/edit">
                 <span class="glyphicon glyphicon-edit"></span>
                 {{'edit' | translate | capitalize}}
             </a>
@@ -32,21 +32,21 @@
         <h1 class="page-header">
             <small>{{type.properties.prefLabel | localizeValue}}</small>
             <br>
-            {{resource.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+            {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
         </h1>
 
         <div class="text-muted page-header-info">
-            <small>{{resource.uri}}</small>
-            <small>{{resource.code}}</small>
-            <small ng-if="!resource.code && !resource.uri">-</small>
+            <small>{{node.uri}}</small>
+            <small>{{node.code}}</small>
+            <small ng-if="!node.code && !node.uri">-</small>
         </div>
 
 
-        <thl-resource-properties resource="resource"></thl-resource-properties>
+        <thl-node-properties node="node"></thl-node-properties>
 
-        <thl-resource-references resource="resource"></thl-resource-references>
+        <thl-node-references node="node"></thl-node-references>
 
-        <thl-resource-referrers resource="resource"></thl-resource-referrers>
+        <thl-node-referrers node="node"></thl-node-referrers>
 
     </div>
 </div>
@@ -56,6 +56,6 @@
 <span class="label label-default" ng-click="showJson = !showJson">json</span>
 
 <div ng-show="showJson">
-    <pre>{{resource | json}}</pre>
+    <pre>{{node | json}}</pre>
 </div>
 
