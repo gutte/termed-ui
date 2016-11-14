@@ -74,7 +74,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
 
 })
 
-.controller('GraphEditCtrl', function($scope, $routeParams, $location, $translate, Graph, TypeList, PropertyList) {
+.controller('GraphEditCtrl', function($scope, $routeParams, $location, $translate, Graph, Type, TypeList, PropertyList, GraphNodeList, TypeNodeList) {
 
   $scope.lang = $translate.use();
 
@@ -99,9 +99,12 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.remove = function() {
-    $scope.graph.$delete({
-      graphId: $routeParams.graphId
-    }, function() {
+    GraphNodeList.remove({ graphId: $routeParams.graphId }).$promise
+    .then(function() {
+      return TypeList.remove({ graphId: $routeParams.graphId }).$promise;
+    }).then(function() {
+      return $scope.graph.$delete({ graphId: $routeParams.graphId}).$promise;
+    }).then(function() {
       $location.path('/graphs');
     }, function(error) {
       $scope.error = error;
@@ -109,11 +112,8 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.newType = function() {
-    if (!$scope.types) {
-      $scope.types = [];
-    }
-    $scope.types.unshift({
-      id: "NewType",
+    var newType = {
+      id: "NewType_" + new Date().getTime(),
       properties: {
         prefLabel: [
           {
@@ -136,6 +136,12 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
           }
         }
       ]
+    };
+
+    TypeList.save({ graphId: $routeParams.graphId }, newType, function() {
+      $scope.types = TypeList.query({ graphId: $routeParams.graphId });
+    }, function(error) {
+      $scope.error = error;
     });
   };
 
@@ -144,8 +150,15 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.removeType = function(type) {
-    var i = $scope.types.indexOf(type);
-    $scope.types.splice(i, 1);
+    TypeNodeList.remove({ graphId: $routeParams.graphId, typeId: type.id }, function() {
+      Type.remove({ graphId: $routeParams.graphId, typeId: type.id }, function() {
+        $scope.types = TypeList.query({ graphId: $routeParams.graphId });
+      }, function(error) {
+        $scope.error = error;
+      });
+    }, function(error) {
+      $scope.error = error;
+    });
   };
 
   $scope.newTextAttribute = function(type) {
