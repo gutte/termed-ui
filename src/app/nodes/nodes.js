@@ -211,6 +211,11 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
               }
             }
           },
+          sort: function(a, b) {
+            var aNode = this.get_node(a).original;
+            var bNode = this.get_node(b).original;
+            return aNode.text.localeCompare(bNode.text, lang);
+          },
           plugins: [treeSort == "true" ? "sort" : ""]
         });
       });
