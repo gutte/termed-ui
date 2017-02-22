@@ -7,7 +7,7 @@
         <dd>
             <div ng-repeat="(k, rs) in node.referrers">
                 <div ng-repeat="r in rs">
-                    <a ng-href="#/graphs/{{r.type.graph.id}}/types/{{r.type.id}}/nodes/{{r.id}}">
+                    <a ng-href="#/graphs/{{r.type.graph.id}}/types/{{r.type.id}}/nodes/{{r.id}}" title="{{r.uri}} {{r.code}}">
                         &larr;
                         {{r.properties.prefLabel | localizeValue:('unnamed' | translate)}}
                     </a>

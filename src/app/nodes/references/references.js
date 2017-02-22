@@ -1,7 +1,7 @@
 (function(angular) {
   'use strict';
 
-  angular.module('termed.nodes.references', ['pascalprecht.translate', 'termed.rest'])
+  angular.module('termed.nodes.references', ['pascalprecht.translate', 'termed.rest', 'ngSanitize'])
 
   .directive('thlNodeReferences', function($translate, ReferenceAttributeList, NodeReferenceList) {
     return {
@@ -53,7 +53,7 @@
     };
   })
 
-  .directive('thlSelectNode', function($q, $timeout, $translate, Node, TypeNodeList) {
+  .directive('thlSelectNode', function($q, $timeout, $sanitize, $translate, Node, TypeNodeList) {
     return {
       scope: {
         'ngModel': "=",
@@ -91,10 +91,13 @@
             });
           },
           formatResult: function(result) {
-            return getLocalizedPrefLabel(result.properties);
+            return $sanitize(getLocalizedPrefLabel(result.properties)) + " " +
+              "<small class='text-muted'>" +
+              $sanitize(result.uri || "") + " " + $sanitize(result.code || "") +
+              "</small>";
           },
           formatSelection: function(result) {
-            return getLocalizedPrefLabel(result.properties);
+            return $sanitize(getLocalizedPrefLabel(result.properties));
           }
         });
 
