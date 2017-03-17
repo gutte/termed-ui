@@ -109,7 +109,8 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.nodes = FullNodeList.query({
     graphId: $routeParams.graphId,
     format: 'json',
-    sort: 'properties.prefLabel.' + $scope.lang + '.sortable'
+    sort: 'properties.prefLabel.' + $scope.lang + '.sortable',
+    max: -1
   });
 
 })
