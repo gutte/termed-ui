@@ -11,6 +11,12 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     reloadOnSearch: false
   })
 
+  .when('/graphs/:graphId/nodes-all', {
+    templateUrl: 'app/nodes/node-list-all.html',
+    controller: 'NodeListAllCtrl',
+    reloadOnSearch: false
+  })
+
   .when('/graphs/:graphId/types/:typeId/nodes/:id', {
     templateUrl: 'app/nodes/node.html',
     controller: 'NodeCtrl'
@@ -58,7 +64,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       graphId: $routeParams.graphId,
       query: query,
       max: $scope.max,
-      orderBy: query ? [''] : ['code', 'prefLabel.' + $scope.lang + '.sortable']
+      sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
     }, function(nodes) {
       $scope.nodes = nodes;
       $location.search({
@@ -82,6 +88,32 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
 })
 
+.controller('NodeListAllCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, TypeList, FullNodeList) {
+
+  $scope.lang = $translate.use();
+
+  $scope.graph = Graph.get({
+    graphId: $routeParams.graphId
+  });
+
+  $scope.typesById = {};
+
+  TypeList.query({
+    graphId: $routeParams.graphId
+  }, function(types) {
+    for (var i = 0; i < types.length; i++) {
+      $scope.typesById[types[i].id] = types[i];
+    }
+  });
+
+  $scope.nodes = FullNodeList.query({
+    graphId: $routeParams.graphId,
+    format: 'json',
+    sort: 'properties.prefLabel.' + $scope.lang + '.sortable'
+  });
+
+})
+
 .controller('NodeCtrl', function($scope, $routeParams, $location, $translate, Node, NodePaths, NodeList, Type, Graph) {
 
   $scope.lang = $translate.use();
@@ -100,6 +132,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.graph = Graph.get({
     graphId: $routeParams.graphId
   });
+  
 })
 
 .controller('NodeEditCtrl', function($scope, $routeParams, $location, $translate, Node, Type, Graph) {

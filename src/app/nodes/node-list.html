@@ -27,6 +27,11 @@
     </div>
 
     <div class="col-xs-6 text-right">
+        <a class="btn btn-sm btn-default" ng-href="#/graphs/{{graph.id}}/nodes-all">
+            <span class="glyphicon glyphicon-list"></span>
+            {{'allNodes' | translate | capitalize}}
+        </a>
+
         <div class="btn-group">
             <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="export-menu"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

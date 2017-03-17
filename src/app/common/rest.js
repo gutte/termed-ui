@@ -34,6 +34,10 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/graphs/:graphId/nodes');
 })
 
+.factory('FullNodeList', function($resource) {
+  return $resource('api/ext');
+})
+
 .factory('TypeNodeList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes');
 })

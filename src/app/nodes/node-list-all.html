@@ -1,0 +1,64 @@
+<ol class="breadcrumb">
+    <li><a ng-href="#/">{{'termed' | translate}}</a></li>
+    <li><a ng-href="#/graphs/{{graph.id}}/nodes">
+        {{graph.properties.prefLabel | localizeValue}}
+    </a></li>
+    <li class="active">{{'allNodes' | translate}}</li>
+</ol>
+
+<h1 class="page-header">
+    {{graph.properties.prefLabel | localizeValue}} <small>- {{'allNodes' | translate}}</small>
+</h1>
+
+<div class="text-muted" style="margin:-18px 0 18px">
+    <small>{{graph.uri || '-'}}</small>
+</div>
+
+<div ng-repeat="node in nodes">
+    <h3 class="page-header">
+        <small>{{typesById[node.type.id].properties.prefLabel | localizeValue}}</small><br>
+        <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+            {{node.properties.prefLabel | localizeValue}}
+        </a>
+    </h3>
+
+    <div class="text-muted page-header-info">
+        <small>{{node.uri}}</small>
+        <small>{{node.code}}</small>
+        <small ng-if="!node.code && !node.uri">-</small>
+    </div>
+
+    <div ng-repeat="textAttr in typesById[node.type.id].textAttributes">
+        <dl ng-if="node.properties[textAttr.id]">
+            <dt>{{textAttr.properties.prefLabel | localizeValue | capitalize}}</dt>
+            <dd>
+                <div ng-repeat="langValue in node.properties[textAttr.id]">
+                    <code class="text-muted">{{langValue.lang}}</code> {{langValue.value}}
+                </div>
+            </dd>
+        </dl>
+    </div>
+
+    <div ng-repeat="refAttr in typesById[node.type.id].referenceAttributes">
+        <dl ng-if="node.references[refAttr.id].length > 0">
+            <dt>{{refAttr.properties.prefLabel | localizeValue | capitalize}}</dt>
+            <dd>
+                <div ng-repeat="n in node.references[refAttr.id]">
+                    <a ng-href="#/graphs/{{n.type.graph.id}}/types/{{n.type.id}}/nodes/{{n.id}}" title="{{n.uri}} {{n.code}}">
+                        &rarr;
+                        {{n.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+                    </a>
+                </div>
+            </dd>
+        </dl>
+    </div>
+
+</div>
+
+<hr>
+
+<span class="label label-default" ng-click="showJson = !showJson">json</span>
+
+<div ng-show="showJson">
+    <pre>{{nodes | json}}</pre>
+</div>
