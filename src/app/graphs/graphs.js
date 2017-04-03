@@ -88,7 +88,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
 
   $scope.save = function() {
     $scope.graph.$save(function() {
-      TypeList.save({ graphId: $routeParams.graphId, batch: true }, $scope.types, function() {
+      TypeList.save({ graphId: $routeParams.graphId, batch: true, replace: true }, $scope.types, function() {
         $location.path('/graphs/' + $routeParams.graphId + '/nodes');
       }, function(error) {
         $scope.error = error;
@@ -112,7 +112,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.newType = function() {
-    var newType = {
+    $scope.types.unshift({
       id: "NewType_" + new Date().getTime(),
       properties: {
         prefLabel: [
@@ -136,12 +136,6 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
           }
         }
       ]
-    };
-
-    TypeList.save({ graphId: $routeParams.graphId }, newType, function() {
-      $scope.types = TypeList.query({ graphId: $routeParams.graphId });
-    }, function(error) {
-      $scope.error = error;
     });
   };
 
@@ -150,15 +144,8 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.removeType = function(type) {
-    TypeNodeList.remove({ graphId: $routeParams.graphId, typeId: type.id }, function() {
-      Type.remove({ graphId: $routeParams.graphId, typeId: type.id }, function() {
-        $scope.types = TypeList.query({ graphId: $routeParams.graphId });
-      }, function(error) {
-        $scope.error = error;
-      });
-    }, function(error) {
-      $scope.error = error;
-    });
+    var i = $scope.types.indexOf(type);
+    $scope.types.splice(i, 1);
   };
 
   $scope.newTextAttribute = function(type) {
