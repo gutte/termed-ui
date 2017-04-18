@@ -11,6 +11,12 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     reloadOnSearch: false
   })
 
+  .when('/graphs/:graphId/types/:typeId/nodes', {
+    templateUrl: 'app/nodes/node-list-by-type.html',
+    controller: 'NodeListByTypeCtrl',
+    reloadOnSearch: false
+  })
+
   .when('/graphs/:graphId/nodes-all', {
     templateUrl: 'app/nodes/node-list-all.html',
     controller: 'NodeListAllCtrl',
@@ -77,6 +83,62 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     NodeList.save({
       graph: $scope.graph,
       type: type
+    }, function(node) {
+      $location.path('/graphs/' + node.type.graph.id + '/types/' + node.type.id + '/nodes/' + node.id + '/edit');
+    }, function(error) {
+      $scope.error = error;
+    });
+  };
+
+  $scope.searchNodes(($location.search()).q || "");
+
+})
+
+.controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeList, TypeList, NodeList) {
+
+  $scope.lang = $translate.use();
+
+  $scope.query = ($location.search()).q || "";
+  $scope.max = 50;
+
+  $scope.graph = Graph.get({
+    graphId: $routeParams.graphId
+  });
+
+  $scope.type = Type.get({
+    graphId: $routeParams.graphId,
+    typeId: $routeParams.typeId
+  });
+
+  $scope.types = TypeList.query({
+    graphId: $routeParams.graphId
+  });
+
+  $scope.loadMoreResults = function() {
+    $scope.max += 50;
+    $scope.searchNodes(($location.search()).q || "");
+  };
+
+  $scope.searchNodes = function(query) {
+    $scope.query = query;
+    TypeNodeList.query({
+      graphId: $routeParams.graphId,
+      typeId: $routeParams.typeId,
+      query: query,
+      max: $scope.max,
+      sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
+    }, function(nodes) {
+      $scope.nodes = nodes;
+      $location.search({
+        q: query
+      }).replace();
+    });
+  };
+
+  $scope.newNode = function() {
+    NodeList.save({
+      graph: $scope.graph,
+      type: $scope.type
     }, function(node) {
       $location.path('/graphs/' + node.type.graph.id + '/types/' + node.type.id + '/nodes/' + node.id + '/edit');
     }, function(error) {

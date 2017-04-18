@@ -1,0 +1,109 @@
+<ol class="breadcrumb">
+  <li><a ng-href="#/">{{'termed' | translate}}</a></li>
+  <li class="active">
+    {{graph.properties.prefLabel | localizeValue}}
+  </li>
+</ol>
+
+<div class="pull-right">
+  <a class="btn btn-link btn-xs btn-default" ng-href="#/graphs/{{graph.id}}/nodes-all">
+    <span class="glyphicon glyphicon-list"></span>
+    {{'allNodes' | translate | capitalize}}
+  </a>
+
+  <div class="btn-group">
+    <button class="btn btn-link btn-xs btn-default dropdown-toggle" type="button" id="export-menu"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <span class="glyphicon glyphicon-download-alt"></span>
+      {{'download' | translate | capitalize}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="export-menu">
+      <li><a ng-href="api/graphs/{{graph.id}}/nodes?max=-1" type="application/json">JSON</a></li>
+    </ul>
+  </div>
+</div>
+
+<h1 class="page-header">
+  {{graph.properties.prefLabel | localizeValue}}
+</h1>
+<div class="text-muted" style="margin:-18px 0 18px">
+  <small>{{graph.uri || '-'}}</small>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types">
+    <a ng-href="#/graphs/{{t.graph.id}}/types/{{t.id}}/nodes/">
+      {{t.properties.prefLabel | localizeValue}}
+    </a>
+  </li>
+</ul>
+
+<br>
+
+<div class="row">
+  <div class="col-md-10 col-sm-8">
+    <div class="input-group">
+      <div class="input-group-addon">
+        <span class="glyphicon glyphicon-search"></span>
+      </div>
+      <input class="form-control" ng-model="query"
+             ng-change="searchNodes(query)" ng-model-options="{debounce: 50}"
+             placeholder="{{'search' | translate | capitalize}}" type="text">
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-4 text-left">
+    <button type="submit" class="btn btn-primary btn-block" ng-click="newNode()">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{'new_' | translate | capitalize}}
+      {{type.properties.prefLabel | localizeValue | lowercase}}
+    </button>
+  </div>
+</div>
+
+<br>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>{{'label' | translate | capitalize}}</th>
+    <th width="20%">{{'code' | translate | capitalize}}</th>
+    <th width="20%">{{'lastModifiedDate' | translate | capitalize}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="node in nodes">
+    <td>
+      <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+        {{node.properties.prefLabel | localizeValue}}
+      </a>
+    </td>
+    <td>
+      <small>
+        <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
+           class="text-muted">
+          {{node.code}}
+        </a>
+      </small>
+    </td>
+    <td>
+      <small class="text-muted">
+        {{node.lastModifiedDate | date:'dd.mm.yyyy HH:mm:ss'}}
+      </small>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<button class="btn btn-default btn-sm {{nodes.length == max || 'disabled'}}"
+        ng-click="loadMoreResults()">
+  {{'showMoreResults' | translate | capitalize}}
+</button>
+
+<hr>
+
+<span class="label label-default" ng-click="showJson = !showJson">json</span>
+
+<div ng-show="showJson">
+  <pre>{{nodes | json}}</pre>
+</div>

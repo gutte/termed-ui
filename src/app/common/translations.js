@@ -48,13 +48,16 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     addNewValue: 'lisää uusi',
     add: 'lisää',
     addNew: 'lisää uusi',
+    new_: 'uusi',
     save: 'tallenna',
     remove: 'poista',
     edit: 'muokkaa',
+    search: 'etsi',
     download: 'lataa',
     updated: 'muokkattu',
     added: 'lisätty',
     unnamed: 'Nimetön',
+    lastModifiedDate: 'muokattu',
     warnSlowAllNodesView: 'Huom. näkymän avautuminen voi aineiston koosta riippuen kestää useita minuutteja.',
     warnIdChange: 'Varoitus: ID:n muuttaminen tuhoaa siihen viittaavat tiedot (esim. luokan ilmentymät tai attribuuttien arvot). On suositeltavaa ettei tunnuksia muuteta aineiston tietomallin määrittelyvaiheen jälkeen.'
   })
@@ -98,13 +101,16 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     addNewValue: 'add new',
     add: 'add',
     addNew: 'add new',
+    new_: 'new',
     save: 'save',
     remove: 'remove',
     edit: 'edit',
+    search: 'search',
     download: 'download',
     updated: 'updated',
     added: 'added',
     unnamed: 'Unnamed',
+    lastModifiedDate: 'date modified',
     warnSlowAllNodesView: 'Note that opening all nodes view might take several minutes.',
     warnIdChange: 'Warning: Changing ID deletes all data referring to the ID (e.g. instances of a type or values of an attribute). It\'s recommended that ID values are not changed after initial graph definition.'
   });
