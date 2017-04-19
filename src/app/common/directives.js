@@ -2,7 +2,7 @@
 
 angular.module('termed.directives', [])
 
-.directive('tooltip', function($rootScope) {
+.directive('thlTooltip', function($rootScope) {
   return {
     restrict: 'A',
     link: function(scope, elem, attrs) {

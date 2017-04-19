@@ -32,9 +32,16 @@
 </div>
 
 <ul class="nav nav-tabs">
-  <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types">
+  <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types"
+      data-toggle="tooltip" data-placement="bottom" title="{{t.properties.prefLabel | localizeValue}}"
+      thl-tooltip>
     <a ng-href="#/graphs/{{t.graph.id}}/types/{{t.id}}/nodes/">
-      {{t.properties.prefLabel | localizeValue}}
+      <span ng-if="types.length <= 6">
+        {{t.properties.prefLabel | localizeValue}}
+      </span>
+      <span ng-if="types.length > 6">
+        {{t.id == type.id ? (t.properties.prefLabel | localizeValue) : '&bull;'}}
+      </span>
     </a>
   </li>
 </ul>
