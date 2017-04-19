@@ -32,8 +32,14 @@
 </div>
 
 <ul class="nav nav-tabs">
+  <li role="presentation" data-toggle="tooltip" data-placement="top"
+      title="{{'all' | translate | capitalize}}" thl-tooltip>
+    <a ng-href="#/graphs/{{graph.id}}/nodes">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </li>
   <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types"
-      data-toggle="tooltip" data-placement="bottom" title="{{t.properties.prefLabel | localizeValue}}"
+      data-toggle="tooltip" data-placement="top" title="{{t.properties.prefLabel | localizeValue}}"
       thl-tooltip>
     <a ng-href="#/graphs/{{t.graph.id}}/types/{{t.id}}/nodes/">
       <span ng-if="types.length <= 6">
@@ -59,7 +65,7 @@
              placeholder="{{'search' | translate | capitalize}}" type="text">
     </div>
   </div>
-  <div class="col-md-2 col-sm-4 text-left">
+  <div class="col-md-2 col-sm-4">
     <button type="submit" class="btn btn-primary btn-block" ng-click="newNode()">
       <span class="glyphicon glyphicon-plus"></span>
       {{'new_' | translate | capitalize}}
@@ -75,7 +81,6 @@
   <tr>
     <th>{{'label' | translate | capitalize}}</th>
     <th width="20%">{{'code' | translate | capitalize}}</th>
-    <th width="20%">{{'lastModifiedDate' | translate | capitalize}}</th>
   </tr>
   </thead>
   <tbody>
@@ -91,11 +96,6 @@
            class="text-muted">
           {{node.code}}
         </a>
-      </small>
-    </td>
-    <td>
-      <small class="text-muted">
-        {{node.lastModifiedDate | date:'dd.mm.yyyy HH:mm:ss'}}
       </small>
     </td>
   </tr>

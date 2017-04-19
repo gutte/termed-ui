@@ -12,10 +12,11 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
   .translations('fi', {
     termed: 'Termieditori',
     allNodes: 'kaikki tietueet',
+    all: 'kaikki',
     nodes: 'tietueet',
     node: 'tietue',
-    type: 'luokka',
-    types: 'luokat',
+    type: 'tyyppi',
+    types: 'tyypit',
     textAttribute: 'tekstiattribuutti',
     textAttributes: 'tekstiattribuutit',
     referenceAttribute: 'viiteattribuutti',
@@ -65,6 +66,7 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
   .translations('en', {
     termed: 'Termed',
     allNodes: 'all resources',
+    all: 'all',
     nodes: 'resources',
     node: 'resource',
     type: 'type',
