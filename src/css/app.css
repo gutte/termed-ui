@@ -28,3 +28,7 @@ h1 small {
     font-family: monospace;
     text-align: center;
 }
+
+.nav.types > li > a {
+    padding: 10px 10px;
+}

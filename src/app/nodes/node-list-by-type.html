@@ -31,7 +31,7 @@
   <small>{{graph.uri || '-'}}</small>
 </div>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs types">
   <li role="presentation" data-toggle="tooltip" data-placement="top"
       title="{{'all' | translate | capitalize}}" thl-tooltip>
     <a ng-href="#/graphs/{{graph.id}}/nodes">
@@ -42,11 +42,11 @@
       data-toggle="tooltip" data-placement="top" title="{{t.properties.prefLabel | localizeValue}}"
       thl-tooltip>
     <a ng-href="#/graphs/{{t.graph.id}}/types/{{t.id}}/nodes/">
-      <span ng-if="types.length <= 6">
-        {{t.properties.prefLabel | localizeValue}}
+      <span ng-if="$index < 3">
+        {{t.properties.prefLabel | localizeValue | limit:12}}
       </span>
-      <span ng-if="types.length > 6">
-        {{t.id == type.id ? (t.properties.prefLabel | localizeValue) : '&bull;'}}
+      <span ng-if="$index >= 3">
+        {{t.id == type.id ? (t.properties.prefLabel | localizeValue) : '&bull;' | limit:12}}
       </span>
     </a>
   </li>
@@ -62,14 +62,15 @@
       </div>
       <input class="form-control" ng-model="query"
              ng-change="searchNodes(query)" ng-model-options="{debounce: 50}"
-             placeholder="{{'search' | translate | capitalize}}" type="text">
+             placeholder="{{'search' | translate | capitalize}} {{type.properties.prefLabel | localizeValue | lowercase}}"
+             type="text">
     </div>
   </div>
   <div class="col-md-2 col-sm-4">
     <button type="submit" class="btn btn-primary btn-block" ng-click="newNode()">
       <span class="glyphicon glyphicon-plus"></span>
       {{'new_' | translate | capitalize}}
-      {{type.properties.prefLabel | localizeValue | lowercase}}
+      {{type.properties.prefLabel | localizeValue | lowercase | limit:12}}
     </button>
   </div>
 </div>
