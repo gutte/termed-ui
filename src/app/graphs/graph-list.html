@@ -85,7 +85,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="graph in graphs | filter:graphQuery">
+                    <tr ng-repeat="graph in graphs | filter:graphQuery | orderBy:'code'">
                         <td>
                             <a ng-href="#/graphs/{{graph.id}}/nodes">
                                 {{graph.properties.prefLabel | localizeValue}}
