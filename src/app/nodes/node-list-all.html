@@ -9,9 +9,11 @@
 <h1 class="page-header">
     {{graph.properties.prefLabel | localizeValue}} <small>- {{'allNodes' | translate}}</small>
 </h1>
-
-<div class="text-muted" style="margin:-18px 0 18px">
-    <small>{{graph.uri || '-'}}</small>
+<div class="page-header-info">
+  <span ng-if="graph.properties.description">
+    {{graph.properties.description | localizeValue}}<br>
+  </span>
+    <small class="text-muted">{{graph.uri || '-'}}</small>
 </div>
 
 <div ng-repeat="node in nodes">
