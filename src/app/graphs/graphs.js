@@ -88,7 +88,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
 
   $scope.save = function() {
     $scope.graph.$save(function() {
-      TypeList.save({ graphId: $routeParams.graphId, batch: true, replace: true }, $scope.types, function() {
+      TypeList.replace({ graphId: $routeParams.graphId }, $scope.types, function() {
         $location.path('/graphs/' + $routeParams.graphId + '/nodes');
       }, function(error) {
         $scope.error = error;

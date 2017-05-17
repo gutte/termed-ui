@@ -11,7 +11,7 @@ angular.module('termed.rest', ['ngResource'])
 })
 
 .factory('TypeList', function($resource) {
-  return $resource('api/graphs/:graphId/types');
+  return $resource('api/graphs/:graphId/types', null, { 'replace': { method : 'PUT' }});
 })
 
 .factory('Type', function($resource) {
