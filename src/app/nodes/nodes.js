@@ -34,7 +34,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   });
 })
 
-.controller('NodeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeList, NodeList, Node, TypeList) {
+.controller('NodeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeTreeList, NodeList, Node, TypeList) {
 
   $scope.lang = $translate.use();
 
@@ -65,10 +65,32 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   };
 
   $scope.searchNodes = function(query) {
-    $scope.query = query;
-    GraphNodeList.query({
+    var tokens = (query.match(/\w+/g) || []);
+    var where = [];
+
+    $scope.types.forEach(function(type) {
+      var whereType = [];
+      
+      whereType.push("graph.id:" + type.graph.id);
+      whereType.push("type.id:" + type.id);
+
+      if (tokens.length > 0) {
+        var whereTypeProperties = [];
+        type.textAttributes.forEach(function(textAttribute) {
+          whereTypeProperties = whereTypeProperties.concat(tokens.map(function(token) {
+            return "properties." + textAttribute.id + ":" + token + "*";
+          }));
+        });
+        whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
+      }
+
+      where.push("(" + whereType.join(" AND ") + ")");
+    });
+
+    GraphNodeTreeList.query({
       graphId: $routeParams.graphId,
-      query: query,
+      select: 'id,code,type,properties.prefLabel',
+      where: where.join(" OR "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
     }, function(nodes) {
@@ -94,7 +116,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
 })
 
-.controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeList, TypeList, NodeList) {
+.controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeTreeList, TypeList, NodeList) {
 
   $scope.lang = $translate.use();
 
@@ -108,6 +130,8 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.type = Type.get({
     graphId: $routeParams.graphId,
     typeId: $routeParams.typeId
+  }, function(type) {
+    $scope.searchNodes(($location.search()).q || "");
   });
 
   $scope.types = TypeList.query({
@@ -120,11 +144,28 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   };
 
   $scope.searchNodes = function(query) {
-    $scope.query = query;
-    TypeNodeList.query({
+    var whereType = [];
+    
+    whereType.push("graph.id:" + $scope.type.graph.id);
+    whereType.push("type.id:" + $scope.type.id);
+
+    var tokens = (query.match(/\w+/g) || []);
+
+    if (tokens.length > 0) {
+      var whereTypeProperties = [];
+      $scope.type.textAttributes.forEach(function(textAttribute) {
+        whereTypeProperties = whereTypeProperties.concat(tokens.map(function(token) {
+          return "properties." + textAttribute.id + ":" + token + "*";
+        }));
+      });
+      whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
+    }
+
+    TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
-      query: query,
+      select: 'id,code,type,properties.prefLabel',
+      where: whereType.join(" AND "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
     }, function(nodes) {
@@ -146,11 +187,9 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     });
   };
 
-  $scope.searchNodes(($location.search()).q || "");
-
 })
 
-.controller('NodeListAllCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, TypeList, FullNodeList) {
+.controller('NodeListAllCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, TypeList, GraphNodeTreeList) {
 
   $scope.lang = $translate.use();
 
@@ -168,9 +207,9 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     }
   });
 
-  $scope.nodes = FullNodeList.query({
+  $scope.nodes = GraphNodeTreeList.query({
     graphId: $routeParams.graphId,
-    format: 'json',
+    select: 'id,code,uri,type,properties.*,references.*',
     sort: 'properties.prefLabel.' + $scope.lang + '.sortable',
     max: -1
   });

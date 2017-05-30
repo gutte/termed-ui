@@ -30,16 +30,24 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/nodes');
 })
 
+.factory('NodeTreeList', function($resource) {
+  return $resource('api/node-trees');
+})
+
 .factory('GraphNodeList', function($resource) {
   return $resource('api/graphs/:graphId/nodes');
 })
 
-.factory('FullNodeList', function($resource) {
-  return $resource('api/ext');
+.factory('GraphNodeTreeList', function($resource) {
+  return $resource('api/graphs/:graphId/node-trees');
 })
 
 .factory('TypeNodeList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes');
+})
+
+.factory('TypeNodeTreeList', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/node-trees');
 })
 
 .factory('Node', function($resource) {

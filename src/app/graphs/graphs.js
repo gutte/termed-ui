@@ -17,7 +17,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   });
 })
 
-.controller('GraphListCtrl', function($scope, $location, $translate, GraphList, NodeList) {
+.controller('GraphListCtrl', function($scope, $location, $translate, GraphList, NodeTreeList) {
 
   $scope.lang = $translate.use();
 
@@ -30,8 +30,12 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.searchNodes = function(query) {
-    NodeList.query({
-      query: query,
+    var parsedQuery = (query.match(/\w+/g) || []).map(
+      function(token) { return 'properties.prefLabel:' + token + '*'; });
+
+    NodeTreeList.query({
+      select: 'id,type,properties.prefLabel',
+      where: parsedQuery,
       max: $scope.max
     }, function(nodes) {
       $scope.nodes = nodes;
