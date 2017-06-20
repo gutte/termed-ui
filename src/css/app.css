@@ -27,6 +27,8 @@ h1 small {
     color: #777;
     font-family: monospace;
     text-align: center;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .nav.types > li > a {

@@ -1,13 +1,23 @@
 <div class="form-group" ng-repeat="textAttr in textAttrs">
-    <label>{{textAttr.properties.prefLabel | localizeValue | capitalize}}</label>
+  <label>{{textAttr.properties.prefLabel | localizeValue | capitalize}}</label>
 
-    <div ng-repeat="langValue in node.properties[textAttr.id]">
-        <input type="text" class="form-control pull-left lang-input"
-               ng-model="langValue.lang" style="width:5%;">
-        <textarea type="text" class="form-control" rows="1"
-                  ng-model="langValue.value"
-                  style="width:95%;border-top-left-radius:0;border-bottom-left-radius:0;">
-        </textarea>
-    </div>
+  <table>
+    <tbody thl-sortable elements="node.properties[textAttr.id]">
+    <tr ng-repeat="langValue in node.properties[textAttr.id]">
+      <td width="6%">
+        <input type="text" class="form-control lang-input" ng-model="langValue.lang">
+      </td>
+      <td width="91%">
+        <textarea class="form-control" rows="1" ng-model="langValue.value"
+                  style="border-top-left-radius:0;border-bottom-left-radius:0;"></textarea>
+      </td>
+      <td width="3%" class="handle text-center">
+        <span class="label label-default">
+          <span class="glyphicon glyphicon-sort"></span>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
