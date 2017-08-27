@@ -77,9 +77,9 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       if (tokens.length > 0) {
         var whereTypeProperties = [];
         type.textAttributes.forEach(function(textAttribute) {
-          whereTypeProperties = whereTypeProperties.concat(tokens.map(function(token) {
+          whereTypeProperties.push(tokens.map(function(token) {
             return "properties." + textAttribute.id + ":" + token + "*";
-          }));
+          }).join(" AND "));
         });
         whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
       }
@@ -154,9 +154,9 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     if (tokens.length > 0) {
       var whereTypeProperties = [];
       $scope.type.textAttributes.forEach(function(textAttribute) {
-        whereTypeProperties = whereTypeProperties.concat(tokens.map(function(token) {
+        whereTypeProperties.push(tokens.map(function(token) {
           return "properties." + textAttribute.id + ":" + token + "*";
-        }));
+        }).join(" AND "));
       });
       whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
     }
