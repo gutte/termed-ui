@@ -1,5 +1,5 @@
 <div class="form-group" ng-repeat="textAttr in textAttrs">
-  <label>{{textAttr.properties.prefLabel | localizeValue | capitalize}}</label>
+  <label>{{textAttr.properties.prefLabel | localizeValue:textAttr.id | capitalize}}</label>
 
   <table>
     <tbody thl-sortable elements="node.properties[textAttr.id]">

@@ -30,7 +30,7 @@
         </div>
 
         <h1 class="page-header">
-            <small>{{type.properties.prefLabel | localizeValue}}</small>
+            <small>{{type.properties.prefLabel | localizeValue:type.id}}</small>
             <br>
             {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
         </h1>

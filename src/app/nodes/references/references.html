@@ -1,6 +1,6 @@
 <div ng-repeat="refAttr in refAttrs">
     <dl ng-if="node.references[refAttr.id].length > 0">
-        <dt>{{refAttr.properties.prefLabel | localizeValue | capitalize}}</dt>
+        <dt>{{refAttr.properties.prefLabel | localizeValue:refAttr.id | capitalize}}</dt>
         <dd>
             <div ng-repeat="n in node.references[refAttr.id]">
                 <a ng-href="#/graphs/{{n.type.graph.id}}/types/{{n.type.id}}/nodes/{{n.id}}" title="{{n.uri}} {{n.code}}">

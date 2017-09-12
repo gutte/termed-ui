@@ -1,5 +1,5 @@
 <div class="form-group" ng-repeat="refAttr in refAttrs">
-    <label>{{refAttr.properties.prefLabel | localizeValue | capitalize}}</label>
+    <label>{{refAttr.properties.prefLabel | localizeValue:refAttr.id | capitalize}}</label>
 
     <div thl-select-node class="form-control"
          ref-attr="refAttr" placeholder="{{'searchValue' | translate | capitalize}}"

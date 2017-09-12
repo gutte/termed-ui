@@ -1,6 +1,6 @@
 <div ng-repeat="textAttr in textAttrs">
     <dl ng-if="node.properties[textAttr.id]">
-        <dt>{{textAttr.properties.prefLabel | localizeValue | capitalize}}</dt>
+        <dt>{{textAttr.properties.prefLabel | localizeValue:textAttr.id | capitalize}}</dt>
         <dd>
             <div ng-repeat="langValue in node.properties[textAttr.id]">
                 <code class="text-muted">{{langValue.lang}}</code> {{langValue.value}}

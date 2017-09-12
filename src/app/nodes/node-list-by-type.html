@@ -39,14 +39,14 @@
     </a>
   </li>
   <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types"
-      data-toggle="tooltip" data-placement="top" title="{{t.properties.prefLabel | localizeValue}}"
+      data-toggle="tooltip" data-placement="top" title="{{t.properties.prefLabel | localizeValue:t.id}}"
       thl-tooltip>
     <a ng-href="#/graphs/{{t.graph.id}}/types/{{t.id}}/nodes/">
       <span ng-if="$index < 3">
-        {{t.properties.prefLabel | localizeValue | limit:12}}
+        {{t.properties.prefLabel | localizeValue:t.id | limit:12}}
       </span>
       <span ng-if="$index >= 3">
-        {{t.id == type.id ? (t.properties.prefLabel | localizeValue) : '&bull;' | limit:12}}
+        {{t.id == type.id ? (t.properties.prefLabel | localizeValue:t.id) : '&bull;' | limit:12}}
       </span>
     </a>
   </li>
@@ -70,7 +70,7 @@
     <button type="submit" class="btn btn-primary btn-block" ng-click="newNode()">
       <span class="glyphicon glyphicon-plus"></span>
       {{'new_' | translate | capitalize}}
-      {{type.properties.prefLabel | localizeValue | lowercase | limit:12}}
+      {{type.properties.prefLabel | localizeValue:type.id | lowercase | limit:12}}
     </button>
   </div>
 </div>
