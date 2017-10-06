@@ -64,11 +64,11 @@ angular.module('termed.filters', ['pascalprecht.translate'])
     for (var property in properties) {
       var values = properties[property];
 
-      for (var i = 0; i < values.length; i++) {
-        var lang = values[i].lang;
-        var value = values[i].value.substring(0, 60);
+      for (var j = 0; j < values.length; j++) {
+        var lang = values[j].lang;
+        var value = values[j].value.substring(0, 60);
 
-        if ((lang == currentLang || lang == '') && value.length > 0) {
+        if ((lang == currentLang || lang === '') && value.length > 0) {
           results.push(property + ": " + value);
         } else {
           results.push(property + ": " + value + " (" + lang + ")");
