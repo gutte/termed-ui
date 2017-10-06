@@ -34,7 +34,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
       function(token) { return 'properties.prefLabel:' + token + '*'; });
 
     NodeTreeList.query({
-      select: 'id,type,properties.prefLabel',
+      select: 'id,type,properties.*',
       where: parsedQuery,
       max: $scope.max
     }, function(nodes) {

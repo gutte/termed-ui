@@ -89,7 +89,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
     GraphNodeTreeList.query({
       graphId: $routeParams.graphId,
-      select: 'id,code,type,properties.prefLabel',
+      select: 'id,code,type,properties.*',
       where: where.join(" OR "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
@@ -164,7 +164,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
-      select: 'id,code,type,properties.prefLabel',
+      select: 'id,code,type,properties.*',
       where: whereType.join(" AND "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'

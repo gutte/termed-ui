@@ -41,7 +41,7 @@
                     <tr ng-repeat="node in nodes">
                         <td>
                             <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
-                                {{node.properties.prefLabel | localizeValue}}
+                                {{node.properties | localizeAnyValue:'prefLabel'}}
                             </a>
                         </td>
                         <td>
