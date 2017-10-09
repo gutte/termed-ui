@@ -55,7 +55,7 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     edit: 'muokkaa',
     search: 'etsi',
     download: 'lataa',
-    updated: 'muokkattu',
+    updated: 'muokattu',
     added: 'lisätty',
     unnamed: 'Nimetön',
     lastModifiedDate: 'muokattu',
