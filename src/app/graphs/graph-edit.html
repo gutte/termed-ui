@@ -215,6 +215,12 @@
                     <input type="text" class="form-control" ng-model="type.uri">
                 </div>
 
+                <div class="form-group">
+                    <label>{{'nodeCodePrefix' | translate | capitalize}}</label>
+
+                    <input type="text" class="form-control" ng-model="type.nodeCodePrefix">
+                </div>
+
                 <thl-graph-properties-edit property-map="type.properties">
                 </thl-graph-properties-edit>
 
