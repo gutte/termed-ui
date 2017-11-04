@@ -3,30 +3,32 @@
     <li><a ng-href="#/graphs/{{node.type.graph.id}}/nodes">
         {{graph.properties.prefLabel | localizeValue}}
     </a></li>
-    <li class="active">
+    <li><a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
         {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+    </a></li>
+    <li class="active">
+        r{{revision}}
     </li>
 </ol>
 
+
 <div class="row">
     <div class="col-sm-4">
-        <div class="panel panel-default">
-            <div class="panel-heading" style="padding-top: 5px; padding-bottom: 5px">
-                {{'hierarchy' | translate | capitalize}}
-            </div>
-            <div style="overflow:hidden" class="panel-body">
-                <thl-node-tree node="node" type="type"></thl-node-tree>
-            </div>
-        </div>
+        <thl-node-revisions node="node" revision="{{revision}}"></thl-node-revisions>
     </div>
     <div class="col-sm-8">
 
-        <div>
-            <a class="btn btn-sm btn-default"
-               ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}/edit">
-                <span class="glyphicon glyphicon-edit"></span>
-                {{'edit' | translate | capitalize}}
-            </a>
+        <div class="alert alert-info" role="alert">
+            <div class="row">
+                <div class="col-xs-6">
+                    {{'revisionViewNote' | translate | capitalize}} <code>r{{revision}}</code>.
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+                        <strong>{{'toCurrentVersion' | translate | capitalize}} &raquo;</strong>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <h1 class="page-header">
@@ -44,13 +46,7 @@
 
         <thl-node-properties node="node"></thl-node-properties>
 
-        <thl-node-references node="node"></thl-node-references>
-
-        <thl-node-referrers node="node"></thl-node-referrers>
-
-        <hr>
-
-        <thl-node-revisions node="node"></thl-node-revisions>
+        <thl-node-revision-references node="node" revision="{{revision}}"></thl-node-revision-references>
 
     </div>
 </div>

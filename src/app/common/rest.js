@@ -54,6 +54,17 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/graphs/:graphId/types/:typeId/nodes/:id', null, { 'update': { method : 'PUT' }});
 })
 
+.factory('NodeRevision', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/revisions/:number', null, {
+    'get': {
+      method: 'GET',
+      transformResponse: function(data, header) {
+        return angular.fromJson(data).object;
+      }
+    }
+  });
+})
+
 .factory('NodeReferenceList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/references/:attributeId');
 })
@@ -68,6 +79,10 @@ angular.module('termed.rest', ['ngResource'])
 
 .factory('NodePaths', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/paths/:attributeId');
+})
+
+.factory('NodeRevisionList', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/revisions');
 })
 
 .factory('PropertyList', function($resource) {

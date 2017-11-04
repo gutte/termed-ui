@@ -1,0 +1,29 @@
+<div class="panel panel-info">
+    <div class="panel-heading" style="padding-top: 5px; padding-bottom: 5px">
+      {{'revisions' | translate | capitalize}}
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-muted">{{'id' | translate | capitalize}}</th>
+                    <th class="text-muted">{{'date' | translate | capitalize}}</th>
+                    <th class="text-muted">{{'author' | translate | capitalize}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="r in revisions">
+                    <td>
+                        <a ng-href="#/graphs/{{r.object.type.graph.id}}/types/{{r.object.type.id}}/nodes/{{r.object.id}}/revisions/{{r.number}}">
+                            <code>r{{r.number}}</code>
+                        </a>
+                        <span ng-if="revision >= r.number && ($first || (revisions[$index - 1].number > revision))"
+                              class="glyphicon glyphicon-chevron-left"></span>
+                    </td>
+                    <td><small>{{r.date | date:'d.M.yyyy HH:mm'}}</small></td>
+                    <td><small>{{r.author}}</small></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

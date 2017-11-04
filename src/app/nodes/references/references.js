@@ -33,6 +33,42 @@
     };
   })
 
+  .directive('thlNodeRevisionReferences', function($translate, ReferenceAttributeList, NodeRevision) {
+    return {
+      restrict: 'E',
+      scope: {
+        node: '=',
+        revision: '@'
+      },
+      templateUrl: 'app/nodes/references/revision-references.html',
+      controller: function($scope) {
+        $scope.lang = $translate.use();
+
+        $scope.node.$promise.then(function(node) {
+          ReferenceAttributeList.query({
+            graphId: node.type.graph.id,
+            typeId: node.type.id
+          }, function(refAttrs) {
+            $scope.refAttrs = refAttrs;
+            for (var i = 0; i < refAttrs.length; i++) {
+              var attrId = refAttrs[i].id;
+              var refs = node.references[attrId] || [];
+              for (var j = 0; j < refs.length; j++) {
+                var ref = refs[j];
+                node.references[attrId][j] = NodeRevision.get({
+                  graphId: ref.type.graph.id,
+                  typeId: ref.type.id,
+                  id: ref.id,
+                  number: $scope.revision
+                });
+              }
+            }
+          });
+        });
+      }
+    };
+  })
+
   .directive('thlNodeReferencesEdit', function($translate, ReferenceAttributeList, NodeList) {
     return {
       restrict: 'E',

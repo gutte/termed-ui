@@ -1,6 +1,6 @@
 (function (angular) { 'use strict';
 
-angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.references', 'termed.nodes.referrers', 'termed.nodes.properties'])
+angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.references', 'termed.nodes.referrers', 'termed.nodes.properties', 'termed.nodes.revisions'])
 
 .config(function($routeProvider) {
   $routeProvider
@@ -26,6 +26,11 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   .when('/graphs/:graphId/types/:typeId/nodes/:id', {
     templateUrl: 'app/nodes/node.html',
     controller: 'NodeCtrl'
+  })
+
+  .when('/graphs/:graphId/types/:typeId/nodes/:id/revisions/:number', {
+    templateUrl: 'app/nodes/node-revision.html',
+    controller: 'NodeRevisionCtrl'
   })
 
   .when('/graphs/:graphId/types/:typeId/nodes/:id/edit', {
@@ -238,6 +243,30 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     graphId: $routeParams.graphId
   });
   
+})
+
+.controller('NodeRevisionCtrl', function($scope, $routeParams, $location, $translate, $q, NodeRevision, Type, Graph) {
+
+  $scope.lang = $translate.use();
+
+  $scope.revision = $routeParams.number;
+
+  $scope.node = NodeRevision.get({
+    graphId: $routeParams.graphId,
+    typeId: $routeParams.typeId,
+    id: $routeParams.id,
+    number: $routeParams.number
+  });
+
+  $scope.type = Type.get({
+    graphId: $routeParams.graphId,
+    typeId: $routeParams.typeId
+  });
+
+  $scope.graph = Graph.get({
+    graphId: $routeParams.graphId
+  });
+
 })
 
 .controller('NodeEditCtrl', function($scope, $routeParams, $location, $translate, Node, Type, Graph) {
