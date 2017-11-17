@@ -11,6 +11,15 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
 
   .translations('fi', {
     termed: 'Termieditori',
+    admin: 'ylläpito',
+    restoreFromRemote: 'palauta toisesta instanssista',
+    restore: 'palauta',
+    url: 'osoite',
+    username: 'käyttäjätunnus',
+    password: 'salasana',
+    reindex: 'indeksoi uudelleen',
+    reindex: 'indeksoi uudelleen',
+    purgeRevisions: 'tyhjennä versiohistoria',
     allNodes: 'kaikki tietueet',
     all: 'kaikki',
     nodes: 'tietueet',
@@ -72,6 +81,14 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
 
   .translations('en', {
     termed: 'Termed',
+    admin: 'admin',
+    restoreFromRemote: 'restore from remote instance',
+    restore: 'restore',
+    url: 'url',
+    username: 'username',
+    password: 'password',
+    reindex: 'reindex',
+    purgeRevisions: 'purge revisions',
     allNodes: 'all resources',
     all: 'all',
     nodes: 'resources',

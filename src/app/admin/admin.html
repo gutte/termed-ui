@@ -1,0 +1,66 @@
+<ol class="breadcrumb">
+  <li><a ng-href="#/">{{'termed' | translate}}</a></li>
+  <li class="active">
+    {{'admin' | translate | capitalize}}
+  </li>
+</ol>
+
+<div class="alert alert-danger" role="alert" ng-show="error">
+  <span class="glyphicon glyphicon-alert"></span> {{error}}
+</div>
+
+<h1 class="page-header">
+  {{'admin' | translate | capitalize}}
+</h1>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'reindex' | translate | capitalize}}</h3>
+  </div>
+
+  <div class="panel-body">
+
+    <a ng-click="reindex()" class="btn btn-warning {{ indexing ? 'disabled' : ''}}">
+      <span class="glyphicon glyphicon-refresh spinning" ng-show="indexing"></span>
+      {{'reindex' | translate | capitalize}}
+    </a>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'restoreFromRemote' | translate | capitalize}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-group">
+      <label>{{'url' | translate | capitalize}}</label>
+      <input type="text" class="form-control" ng-model="remote.url">
+    </div>
+    <div class="form-group">
+      <label>{{'username' | translate | capitalize}}</label>
+      <input type="text" class="form-control" ng-model="remote.username">
+    </div>
+    <div class="form-group">
+      <label>{{'password' | translate | capitalize}}</label>
+      <input type="password" class="form-control" ng-model="remote.password">
+    </div>
+    <a ng-click="restore()" class="btn btn-danger {{ restoring ? 'disabled' : ''}}">
+      <span class="glyphicon glyphicon-refresh spinning" ng-show="restoring"></span>
+      {{'restore' | translate | capitalize}}
+    </a>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{'purgeRevisions' | translate | capitalize}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <a ng-click="purgeRevisions()" class="btn btn-danger {{ purging ? 'disabled' : ''}}">
+      <span class="glyphicon glyphicon-refresh spinning" ng-show="purging"></span>
+      {{'purgeRevisions' | translate | capitalize}}
+    </a>
+  </div>
+</div>
