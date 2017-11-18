@@ -1,0 +1,160 @@
+<ol class="breadcrumb">
+  <li><a ng-href="#/">{{'termed' | translate}}</a></li>
+  <li><a ng-href="#/admin">{{'admin' | translate | capitalize}}</a></li>
+  <li class="active">
+    {{'users' | translate | capitalize}}
+  </li>
+</ol>
+
+<div class="alert alert-danger" role="alert" ng-show="error">
+  <span class="glyphicon glyphicon-alert"></span> {{error}}
+</div>
+
+<h1 class="page-header">
+  {{'users' | translate | capitalize}}
+</h1>
+
+<div class="row">
+  <div class="col-md-10 col-sm-8">
+    <div class="input-group">
+      <div class="input-group-addon">
+        <span class="glyphicon glyphicon-search"></span>
+      </div>
+      <input class="form-control" ng-model="userQuery" type="text">
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-4">
+    <button type="submit" class="btn btn-primary btn-block" ng-click="newUser()"
+            data-toggle="modal"
+            data-target="#userModal">
+      <span class="glyphicon glyphicon-plus"></span>
+      {{'new_' | translate | capitalize}}
+      {{'user' | translate}}
+    </button>
+  </div>
+</div>
+
+<br>
+
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title" id="typeModalLabel">
+          {{'user' | translate | capitalize}}: {{user.username}}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group form-group-sm">
+          <label>{{'username' | translate | capitalize}}</label>
+          <input type="text" class="form-control" ng-model="user.username">
+        </div>
+
+        <div class="form-group form-group-sm">
+          <label>{{'password' | translate | capitalize}}</label>
+          <input type="password" class="form-control" ng-model="user.password" ng-disabled="!user.updatePassword">
+          <input type="checkbox" ng-model="user.updatePassword" ng-click="user.password = null">
+          {{'setNewPassword' | translate}}
+        </div>
+
+        <div class="form-group form-group-sm">
+          <label>{{'appRole' | translate | capitalize}}</label>
+          <select class="form-control" ng-model="user.appRole">
+            <option>USER</option>
+            <option>ADMIN</option>
+            <option>SUPERUSER</option>
+          </select>
+        </div>
+
+        <div class="form-group form-group-sm">
+          <label>{{'graphRoles' | translate | capitalize}}</label>
+
+          <div ng-repeat="graphRole in user.graphRoles">
+            <div class="row">
+              <div class="col-sm-7">
+                <select class="form-control" ng-model="graphRole.graph.id">
+                  <option ng-repeat="graph in graphs" value="{{graph.id}}">
+                    {{graph.properties.prefLabel | localizeValue}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <select class="form-control" ng-model="graphRole.role">
+                  <option ng-repeat="graphRole in graphsById[graphRole.graph.id].roles"
+                          value="{{graphRole}}">
+                    {{graphRole}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-sm-1 text-right">
+                <button class="btn btn-default btn-sm" ng-click="removeGraphRole(user, graphRole)">
+                  <span class="glyphicon glyphicon-remove"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <br>
+          <button class="btn btn-default btn-sm" ng-click="newGraphRole(user)">
+            <span class="glyphicon glyphicon-plus"></span>
+            {{'new_' | translate | capitalize}}
+            {{'graphRole' | translate}}
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-success" data-dismiss="modal"
+                ng-click="saveUser(user)">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+          {{'save' | translate | capitalize}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th width="20%">{{'username' | translate | capitalize}}</th>
+    <th width="20%">{{'appRole' | translate | capitalize}}</th>
+    <th>{{'graphRoles' | translate | capitalize}}</th>
+    <th width="15%"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="user in users | filter:userQuery | orderBy:'username'">
+    <td>{{user.username}}</td>
+    <td>{{user.appRole}}</td>
+    <td>
+      <div ng-repeat="graphRole in user.graphRoles">
+        {{graphsById[graphRole.graph.id].properties | localizeAnyValue:'prefLabel'}}:
+        {{graphRole.role}}
+      </div>
+    </td>
+    <td class="text-right">
+      <button class="btn btn-default btn-xs" ng-click="editUser(user)"
+              data-toggle="modal"
+              data-target="#userModal">
+        <span class="glyphicon glyphicon-edit"></span>
+        {{'edit' | translate | capitalize}}
+      </button>
+      <button class="btn btn-danger btn-xs" ng-click="removeUser(user)">
+        <span class="glyphicon glyphicon-trash"></span>
+        {{'remove' | translate | capitalize}}
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<span class="label label-default" ng-click="showJson = !showJson">json</span>
+
+<div ng-show="showJson">
+  <pre>{{users | json}}</pre>
+</div>
+

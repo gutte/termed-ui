@@ -8,6 +8,11 @@ angular.module('termed.admin', ['ngRoute'])
   .when('/admin', {
     templateUrl: 'app/admin/admin.html',
     controller: 'AdminCtrl'
+  })
+
+  .when('/admin/users', {
+    templateUrl: 'app/admin/users.html',
+    controller: 'UsersCtrl'
   });
 })
 
@@ -63,5 +68,54 @@ angular.module('termed.admin', ['ngRoute'])
   };
 
 })
+
+.controller('UsersCtrl', function($scope, UserList, GraphList) {
+
+  $scope.users = UserList.query();
+
+  $scope.graphsById = {};
+  $scope.graphs = GraphList.query({}, function(graphs) {
+    for (var i = 0; i < graphs.length; i++) {
+      $scope.graphsById[graphs[i].id] = graphs[i];
+    }
+  });
+
+  $scope.newUser = function() {
+    $scope.user = {
+      updatePassword: true,
+      graphRoles: []
+    };
+  };
+
+  $scope.editUser = function(user) {
+    $scope.user = angular.copy(user);
+  };
+
+  $scope.newGraphRole = function(user) {
+    $scope.user.graphRoles.push({});
+  };
+
+  $scope.removeGraphRole = function(user, graphRole) {
+    var i = user.graphRoles.indexOf(graphRole);
+    user.graphRoles.splice(i, 1);
+  };
+
+  $scope.saveUser = function(user) {
+    UserList.save({'updatePassword': !!user.updatePassword}, user, function() {
+      $scope.users = UserList.query();
+    }, function(error) {
+      $scope.error = error;
+    });
+  };
+
+  $scope.removeUser = function(user) {
+    UserList.remove({'username': user.username}, function() {
+      $scope.users = UserList.query();
+    }, function(error) {
+      $scope.error = error;
+    });
+  };
+
+});
 
 })(window.angular);

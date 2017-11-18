@@ -87,6 +87,10 @@ angular.module('termed.rest', ['ngResource'])
 
 .factory('PropertyList', function($resource) {
   return $resource('api/properties');
+})
+
+.factory('UserList', function($resource) {
+  return $resource('api/users');
 });
 
 })(window.angular);
