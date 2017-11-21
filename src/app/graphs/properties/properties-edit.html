@@ -2,13 +2,24 @@
     <div ng-if="propertyMap[property.id] && ensureProperty(propertyMap, property.id)">
         <label>{{property.properties.prefLabel | localizeValue | capitalize}}</label>
 
-        <div ng-repeat="langValue in propertyMap[property.id]">
-            <input type="text" class="form-control pull-left lang-input"
-                   ng-model="langValue.lang" style="width:5%;">
-            <textarea type="text" class="form-control" rows="1" ng-model="langValue.value"
-                      style="width:95%;border-top-left-radius:0;border-bottom-left-radius:0;">
-            </textarea>
-        </div>
+        <table>
+        <tbody thl-sortable elements="propertyMap[property.id]">
+            <tr ng-repeat="langValue in propertyMap[property.id]">
+                <td width="6%">
+                    <input type="text" class="form-control lang-input" ng-model="langValue.lang">
+                </td>
+                <td width="91%">
+                    <textarea class="form-control" rows="1" ng-model="langValue.value"
+                              style="border-top-left-radius:0;border-bottom-left-radius:0;"></textarea>
+                </td>
+                <td width="3%" class="handle text-center">
+                    <span class="label label-default">
+                        <span class="glyphicon glyphicon-sort"></span>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+        </table>
     </div>
 </div>
 
