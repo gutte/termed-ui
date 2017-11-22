@@ -1,6 +1,6 @@
 (function (angular) { 'use strict';
 
-angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.properties'])
+angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.properties', 'termed.graphs.permissions'])
 
 .config(function($routeProvider) {
   $routeProvider
@@ -115,6 +115,10 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
     });
   };
 
+  $scope.addGraphRole = function(graphRole) {
+    $scope.graph.roles.push(graphRole);
+  }
+
   $scope.newType = function() {
     $scope.types.unshift({
       id: "NewType_" + new Date().getTime(),
@@ -126,6 +130,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
           }
         ]
       },
+      permissions: {},
       textAttributes: [
         {
           id: "prefLabel",
@@ -137,7 +142,8 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
                 value: "Nimike"
               }
             ]
-          }
+          },
+          permissions: {}
         }
       ]
     });
@@ -166,7 +172,8 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
             value: "Uusi tekstiattribuutti"
           }
         ]
-      }
+      },
+      permissions: {}
     });
   };
 
@@ -192,7 +199,8 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
             value: "Uusi viiteattribuutit"
           }
         ]
-      }
+      },
+      permissions: {}
     });
   };
 

@@ -44,7 +44,39 @@
 
     <thl-graph-properties-edit property-map="graph.properties"></thl-graph-properties-edit>
 
+    <thl-graph-permissions-edit permissions-map="graph.permissions"
+                                graph-roles="graph.roles"></thl-graph-permissions-edit>
+
+    <button class="btn btn-xs btn-link" type="button" style="margin-top: -30px"
+            data-toggle="modal" data-target="#graphRoleModal">
+        <span class="glyphicon glyphicon-plus"></span>
+        {{'addNew' | translate | capitalize}} {{'graphRole' | translate}}
+    </button>
 </form>
+
+<div class="modal fade" id="graphRoleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title" id="graphRoleModalLabel">
+                    {{'addNew' | translate | capitalize}} {{'graphRole' | translate}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" ng-model="graphRole">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal"
+                        ng-click="addGraphRole(graphRole)">
+                    {{'add' | translate | capitalize}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <hr>
 
@@ -222,7 +254,10 @@
                 <thl-graph-properties-edit property-map="type.properties">
                 </thl-graph-properties-edit>
 
-                <!-- /body -->
+                <thl-graph-permissions-edit permissions-map="type.permissions"
+                                            graph-roles="graph.roles"></thl-graph-permissions-edit>
+
+              <!-- /body -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
@@ -274,6 +309,9 @@
 
                 <thl-graph-properties-edit property-map="textAttribute.properties">
                 </thl-graph-properties-edit>
+
+                <thl-graph-permissions-edit permissions-map="textAttribute.permissions"
+                                            graph-roles="graph.roles"></thl-graph-permissions-edit>
 
                 <!-- /body -->
             </div>
@@ -334,7 +372,10 @@
                 <thl-graph-properties-edit property-map="referenceAttribute.properties">
                 </thl-graph-properties-edit>
 
-                <!-- /body -->
+                <thl-graph-permissions-edit permissions-map="referenceAttribute.permissions"
+                                            graph-roles="graph.roles"></thl-graph-permissions-edit>
+
+              <!-- /body -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default"
@@ -354,4 +395,5 @@
 
 <div ng-show="showJson">
     <pre>{{graph | json}}</pre>
+    <pre>{{types | json}}</pre>
 </div>

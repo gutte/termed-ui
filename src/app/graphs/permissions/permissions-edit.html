@@ -1,0 +1,26 @@
+<div class="form-group" ng-if="graphRoles && graphRoles.length > 0">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{'permissions' | translate | capitalize}}</th>
+                <th ng-repeat="permission in permissions"
+                    class="text-center text-muted"
+                    style="width: 15%">
+                    {{permission}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="graphRole in graphRoles">
+                <td>
+                    {{graphRole}}
+                </td>
+                <td ng-repeat="permission in permissions" class="text-center">
+                    <input type="checkbox"
+                           ng-checked="permissionsMap[graphRole].indexOf(permission) > -1"
+                           ng-click="togglePermission(permissionsMap, graphRole, permission)">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
