@@ -117,7 +117,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
 
   $scope.addGraphRole = function(graphRole) {
     $scope.graph.roles.push(graphRole);
-  }
+  };
 
   $scope.newType = function() {
     $scope.types.unshift({
