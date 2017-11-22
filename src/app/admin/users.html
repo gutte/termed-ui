@@ -72,30 +72,32 @@
         <div class="form-group form-group-sm">
           <label>{{'graphRoles' | translate | capitalize}}</label>
 
-          <div ng-repeat="graphRole in user.graphRoles">
-            <div class="row">
-              <div class="col-sm-7">
+          <table style="width:100%">
+            <tbody>
+            <tr ng-repeat="graphRole in user.graphRoles">
+              <td style="width:60%">
                 <select class="form-control" ng-model="graphRole.graph.id">
                   <option ng-repeat="graph in graphs" value="{{graph.id}}">
                     {{graph.properties.prefLabel | localizeValue}}
                   </option>
                 </select>
-              </div>
-              <div class="col-sm-4">
+              </td>
+              <td style="width:40%">
                 <select class="form-control" ng-model="graphRole.role">
                   <option ng-repeat="graphRole in graphsById[graphRole.graph.id].roles"
                           value="{{graphRole}}">
                     {{graphRole}}
                   </option>
                 </select>
-              </div>
-              <div class="col-sm-1 text-right">
+              </td>
+              <td class="text-right">
                 <button class="btn btn-default btn-sm" ng-click="removeGraphRole(user, graphRole)">
                   <span class="glyphicon glyphicon-remove"></span>
                 </button>
-              </div>
-            </div>
-          </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
           <br>
           <button class="btn btn-default btn-sm" ng-click="newGraphRole(user)">
             <span class="glyphicon glyphicon-plus"></span>
@@ -118,10 +120,10 @@
 <table class="table">
   <thead>
   <tr>
-    <th width="20%">{{'username' | translate | capitalize}}</th>
-    <th width="20%">{{'appRole' | translate | capitalize}}</th>
+    <th>{{'username' | translate | capitalize}}</th>
+    <th>{{'appRole' | translate | capitalize}}</th>
     <th>{{'graphRoles' | translate | capitalize}}</th>
-    <th width="15%"></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
