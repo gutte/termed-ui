@@ -70,7 +70,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   };
 
   $scope.searchNodes = function(query) {
-    var tokens = (query.match(/\w+/g) || []);
+    var tokens = (query.match(/\S+/g) || []);
     var where = [];
 
     $scope.types.forEach(function(type) {
@@ -149,28 +149,24 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   };
 
   $scope.searchNodes = function(query) {
-    var whereType = [];
-    
-    whereType.push("graph.id:" + $scope.type.graph.id);
-    whereType.push("type.id:" + $scope.type.id);
+    var where = "";
 
-    var tokens = (query.match(/\w+/g) || []);
-
+    var tokens = (query.match(/\S+/g) || []);
     if (tokens.length > 0) {
-      var whereTypeProperties = [];
+      var whereProperties = [];
       $scope.type.textAttributes.forEach(function(textAttribute) {
-        whereTypeProperties.push(tokens.map(function(token) {
+        whereProperties.push(tokens.map(function(token) {
           return "properties." + textAttribute.id + ":" + token + "*";
         }).join(" AND "));
       });
-      whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
+      where = whereProperties.join(" OR ");
     }
 
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
       select: 'id,code,type,properties.*',
-      where: whereType.join(" AND "),
+      where: where,
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
     }, function(nodes) {
