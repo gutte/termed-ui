@@ -23,6 +23,11 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     reloadOnSearch: false
   })
 
+  .when('/graphs/:graphId/nodes-sparql', {
+    templateUrl: 'app/nodes/node-list-sparql.html',
+    controller: 'NodeListSparqlCtrl'
+  })
+
   .when('/graphs/:graphId/types/:typeId/nodes/:id', {
     templateUrl: 'app/nodes/node.html',
     controller: 'NodeCtrl'
@@ -217,6 +222,29 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     sort: sort,
     max: -1
   });
+
+})
+
+.controller('NodeListSparqlCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, NodeSparqlEndpoint) {
+
+  $scope.lang = $translate.use();
+
+  $scope.graph = Graph.get({
+    graphId: $routeParams.graphId
+  });
+
+  $scope.queryString =
+    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT *\nWHERE {\n  ?s ?p ?o .\n}\n";
+
+  $scope.query = function() {
+    NodeSparqlEndpoint.query({
+      graphId: $routeParams.graphId
+    }, $scope.queryString, function(results) {
+      $scope.table = results.data;
+    }, function(error) {
+      $scope.error = error;
+    });
+  };
 
 })
 

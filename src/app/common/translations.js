@@ -81,6 +81,8 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     updated: 'muokattu',
     added: 'lisätty',
     unnamed: 'Nimetön',
+    sqarqlQuery: 'SPARQL-kysely',
+    run: 'suorita',
     lastModifiedDate: 'muokattu',
     warnSlowAllNodesView: 'Huom. näkymän avautuminen voi aineiston koosta riippuen kestää useita minuutteja.',
     warnIdChange: 'Varoitus: ID:n muuttaminen tuhoaa siihen viittaavat tiedot (esim. luokan ilmentymät tai attribuuttien arvot). On suositeltavaa ettei tunnuksia muuteta aineiston tietomallin määrittelyvaiheen jälkeen.'
@@ -158,6 +160,8 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     updated: 'updated',
     added: 'added',
     unnamed: 'Unnamed',
+    sqarqlQuery: 'SPARQL Query',
+    run: 'run',
     lastModifiedDate: 'date modified',
     warnSlowAllNodesView: 'Note that opening all nodes view might take several minutes.',
     warnIdChange: 'Warning: Changing ID deletes all data referring to the ID (e.g. instances of a type or values of an attribute). It\'s recommended that ID values are not changed after initial graph definition.'

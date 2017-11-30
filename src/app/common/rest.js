@@ -58,7 +58,7 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/revisions/:number', null, {
     'get': {
       method: 'GET',
-      transformResponse: function(data, header) {
+      transformResponse: function(data) {
         return angular.fromJson(data).object;
       }
     }
@@ -83,6 +83,21 @@ angular.module('termed.rest', ['ngResource'])
 
 .factory('NodeRevisionList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes/:id/revisions');
+})
+
+.factory('NodeSparqlEndpoint', function($resource) {
+  return $resource('api/graphs/:graphId/nodes/sparql', {}, {
+    'query': {
+      method: 'POST',
+      headers: {
+        'Content-type': 'text/plain',
+        'Accept': 'text/csv'
+      },
+      transformResponse: function(data) {
+        return Papa.parse(data);
+      }
+    }
+  });
 })
 
 .factory('PropertyList', function($resource) {

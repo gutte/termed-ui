@@ -1,0 +1,39 @@
+<ol class="breadcrumb">
+  <li><a ng-href="#/">{{'termed' | translate}}</a></li>
+  <li>
+    <a ng-href="#/graphs/{{graph.id}}/nodes">
+      {{graph.properties.prefLabel | localizeValue}}
+    </a>
+  </li>
+  <li class="active">
+    SPARQL
+  </li>
+</ol>
+
+<div class="alert alert-danger" role="alert" ng-show="error">
+  <span class="glyphicon glyphicon-alert"></span> {{error}}
+</div>
+
+<h1 class="page-header">
+  {{graph.properties.prefLabel | localizeValue}}
+</h1>
+
+<div class="form-group" style="margin-bottom:10px;">
+  <label>{{'sqarqlQuery' | translate}}</label>
+  <textarea class="form-control" rows="6" ng-model="queryString"></textarea>
+</div>
+<button class="btn bnt-default" ng-click="query()">
+  {{'run' | translate | capitalize}}
+</button>
+
+<br><br><br>
+
+<div class="table-responsive">
+  <table class="table table-condensed">
+    <tbody>
+    <tr ng-repeat="row in table">
+      <td ng-repeat="col in row">{{col}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
