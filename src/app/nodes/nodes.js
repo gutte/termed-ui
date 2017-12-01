@@ -234,16 +234,19 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   });
 
   $scope.queryString =
-    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT *\nWHERE {\n  ?s ?p ?o .\n}\n";
+    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT *\nWHERE {\n  ?s ?p ?o .\n}\nLIMIT 25";
 
   $scope.query = function() {
+    $scope.running = true;
     NodeSparqlEndpoint.query({
       graphId: $routeParams.graphId
     }, $scope.queryString, function(results) {
       $scope.table = results.data;
       $scope.error = "";
+      $scope.running = false;
     }, function(error) {
       $scope.error = error;
+      $scope.running = false;
     });
   };
 
