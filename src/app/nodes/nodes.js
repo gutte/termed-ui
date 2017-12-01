@@ -241,6 +241,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       graphId: $routeParams.graphId
     }, $scope.queryString, function(results) {
       $scope.table = results.data;
+      $scope.error = "";
     }, function(error) {
       $scope.error = error;
     });

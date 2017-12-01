@@ -22,7 +22,7 @@
   <label>{{'sqarqlQuery' | translate}}</label>
   <textarea class="form-control" rows="6" ng-model="queryString"></textarea>
 </div>
-<button class="btn bnt-default" ng-click="query()">
+<button class="btn btn-default" ng-click="query()">
   {{'run' | translate | capitalize}}
 </button>
 
@@ -32,7 +32,8 @@
   <table class="table table-condensed">
     <tbody>
     <tr ng-repeat="row in table">
-      <td ng-repeat="col in row">{{col}}</td>
+      <th ng-if="$parent.$first" ng-repeat="col in row">{{col}}</th>
+      <td ng-if="!$parent.$first" ng-repeat="col in row">{{col}}</td>
     </tr>
     </tbody>
   </table>
