@@ -86,11 +86,19 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
       if (tokens.length > 0) {
         var whereTypeProperties = [];
+
+        whereTypeProperties.push("properties.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
+
+        whereTypeProperties.push(tokens.map(function(token) {
+          return "properties.prefLabel." + $scope.lang + ":" + token + "*^2";
+        }).join(" AND "));
+
         type.textAttributes.forEach(function(textAttribute) {
           whereTypeProperties.push(tokens.map(function(token) {
             return "properties." + textAttribute.id + ":" + token + "*";
           }).join(" AND "));
         });
+
         whereType.push("(" + whereTypeProperties.join(" OR ") + ")");
       }
 
@@ -99,7 +107,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
     GraphNodeTreeList.query({
       graphId: $routeParams.graphId,
-      select: 'id,code,type,properties.*',
+      select: 'id,code,uri,type,properties.*',
       where: where.join(" OR "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
@@ -159,18 +167,26 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     var tokens = (query.match(/\S+/g) || []);
     if (tokens.length > 0) {
       var whereProperties = [];
+
+      whereProperties.push("properties.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
+
+      whereProperties.push(tokens.map(function(token) {
+        return "properties.prefLabel." + $scope.lang + ":" + token + "*^2";
+      }).join(" AND "));
+
       $scope.type.textAttributes.forEach(function(textAttribute) {
         whereProperties.push(tokens.map(function(token) {
           return "properties." + textAttribute.id + ":" + token + "*";
         }).join(" AND "));
       });
+
       where = whereProperties.join(" OR ");
     }
 
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
-      select: 'id,code,type,properties.*',
+      select: 'id,code,uri,type,properties.*',
       where: where,
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'

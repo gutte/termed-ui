@@ -87,14 +87,16 @@
   <tbody>
   <tr ng-repeat="node in nodes">
     <td>
-      <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+      <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
+         title="{{node.uri}}">
         {{node.properties | localizeAnyValue:'prefLabel'}}
       </a>
     </td>
     <td>
       <small>
         <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
-           class="text-muted">
+           class="text-muted"
+           title="{{node.uri}}">
           {{node.code}}
         </a>
       </small>
