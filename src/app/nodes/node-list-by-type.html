@@ -62,7 +62,7 @@
         <span class="glyphicon glyphicon-search"></span>
       </div>
       <input class="form-control" ng-model="query"
-             ng-change="searchNodes(query)" ng-model-options="{debounce: 50}"
+             ng-change="searchNodes(query)" ng-model-options="{debounce: 250}"
              placeholder="{{'search' | translate | capitalize}} {{type.properties.prefLabel | localizeValue | lowercase}}"
              type="text">
     </div>

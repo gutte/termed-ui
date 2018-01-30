@@ -87,15 +87,15 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       if (tokens.length > 0) {
         var whereTypeProperties = [];
 
-        whereTypeProperties.push("properties.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
+        whereTypeProperties.push("p.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
 
         whereTypeProperties.push(tokens.map(function(token) {
-          return "properties.prefLabel." + $scope.lang + ":" + token + "*^2";
+          return "p.prefLabel." + $scope.lang + ":" + token + "*^2";
         }).join(" AND "));
 
-        type.textAttributes.forEach(function(textAttribute) {
+        type.textAttributes.slice(0, 5).forEach(function(textAttribute) {
           whereTypeProperties.push(tokens.map(function(token) {
-            return "properties." + textAttribute.id + ":" + token + "*";
+            return "p." + textAttribute.id + ":" + token + "*";
           }).join(" AND "));
         });
 
@@ -168,15 +168,15 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     if (tokens.length > 0) {
       var whereProperties = [];
 
-      whereProperties.push("properties.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
+      whereProperties.push("p.prefLabel." + $scope.lang + ":\"" + query + "\"^4");
 
       whereProperties.push(tokens.map(function(token) {
-        return "properties.prefLabel." + $scope.lang + ":" + token + "*^2";
+        return "p.prefLabel." + $scope.lang + ":" + token + "*^2";
       }).join(" AND "));
 
-      $scope.type.textAttributes.forEach(function(textAttribute) {
+      $scope.type.textAttributes.slice(0, 10).forEach(function(textAttribute) {
         whereProperties.push(tokens.map(function(token) {
-          return "properties." + textAttribute.id + ":" + token + "*";
+          return "p." + textAttribute.id + ":" + token + "*";
         }).join(" AND "));
       });
 
