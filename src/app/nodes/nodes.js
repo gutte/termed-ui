@@ -216,6 +216,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.lang = $translate.use();
 
   var select = $routeParams.select || 'id,code,uri,type,properties.*,references.*';
+  var where = $routeParams.where || '';
   var sort = $routeParams.sort || ('properties.prefLabel.' + $scope.lang + '.sortable');
 
   $scope.graph = Graph.get({
@@ -235,6 +236,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.nodes = GraphNodeTreeList.query({
     graphId: $routeParams.graphId,
     select: select,
+    where: where,
     sort: sort,
     max: -1
   });
