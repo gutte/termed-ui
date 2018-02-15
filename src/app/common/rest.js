@@ -106,6 +106,10 @@ angular.module('termed.rest', ['ngResource'])
 
 .factory('UserList', function($resource) {
   return $resource('api/users');
+})
+
+.factory('Dump', function($resource) {
+  return $resource('api/dump');
 });
 
 })(window.angular);

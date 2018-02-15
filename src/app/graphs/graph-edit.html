@@ -15,6 +15,11 @@
     </div>
 
     <div class="col-xs-4 text-right">
+        <button class="btn btn-sm btn-default" ng-click="duplicate()">
+            <span class="glyphicon glyphicon-duplicate"></span>
+            {{'duplicate' | translate | capitalize}}
+        </button>
+        &nbsp;
         <button class="btn btn-sm btn-danger" ng-click="remove()">
             <span class="glyphicon glyphicon-trash"></span>
             {{'remove' | translate | capitalize}}
