@@ -20,8 +20,9 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="export-menu">
       <li><a ng-href="api/graphs/{{graph.id}}/nodes?max=-1" type="application/json">JSON</a></li>
-      <li><a ng-href="api/graphs/{{graph.id}}/nodes.csv" type="text/csv">CSV</a></li>
       <li><a ng-href="api/graphs/{{graph.id}}/nodes.ttl?download=true" type="text/turtle">RDF</a></li>
+      <li><a ng-href="api/graphs/{{graph.id}}/nodes.csv" type="text/csv">CSV (UTF-8)</a></li>
+      <li><a ng-href="api/graphs/{{graph.id}}/nodes.csv?delimiter=SEMICOLON&lineBreak=CRLF&quoteAll=true&charset=ISO-8859-1" type="text/csv">CSV (Excel, ISO-8859-1)</a></li>
     </ul>
   </div>
 </div>
