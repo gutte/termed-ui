@@ -103,7 +103,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.duplicate = function() {
-    Dump.save({ graphId: $routeParams.graphId, copy: true }, {}, function() {
+    Dump.save({ sourceGraphId: $routeParams.graphId, copy: true }, {}, function() {
       $location.path('/graphs');
     }, function(error) {
       $scope.error = error;
