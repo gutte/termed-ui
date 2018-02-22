@@ -22,8 +22,8 @@ angular.module('termed.admin', ['ngRoute'])
     $scope.indexing = true;
 
     $http({
-      method: 'POST',
-      url: 'api/admin/reindex'
+      method: 'DELETE',
+      url: 'api/index'
     }).then(function(success) {
       $scope.indexing = false;
     }, function(error) {
@@ -58,7 +58,7 @@ angular.module('termed.admin', ['ngRoute'])
 
     $http({
       method: 'DELETE',
-      url: 'api/admin/revisions'
+      url: 'api/revisions'
     }).then(function(success) {
       $scope.purging = false;
     }, function(error) {
