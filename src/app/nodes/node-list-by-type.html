@@ -1,7 +1,10 @@
 <ol class="breadcrumb">
   <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-  <li class="active">
+  <li><a ng-href="#/graphs/{{type.graph.id}}/nodes">
     {{graph.properties.prefLabel | localizeValue}}
+  </a></li>
+  <li class="active">
+    {{type.properties.prefLabel | localizeValue}}
   </li>
 </ol>
 
