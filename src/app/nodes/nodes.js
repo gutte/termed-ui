@@ -204,7 +204,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     if (criteriaModel && criteriaModel.length > 0) {
       $scope.criteria = criteriaModelToString(criteriaModel);
       $scope.searchNodes($scope.query, $scope.criteria);
-    } else if (criteriaModel.length == 0 && oldCriteriaModel.length > 0) {
+    } else if (criteriaModel.length === 0 && oldCriteriaModel.length > 0) {
       $scope.criteria = "";
       $scope.searchNodes($scope.query, $scope.criteria);
     }
