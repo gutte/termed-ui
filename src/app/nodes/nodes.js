@@ -144,7 +144,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.max = 50;
 
   function parseCriteriaModel(type, criteria) {
-    if (criteria.length == 0) {
+    if (criteria.length === 0) {
       return [];
     }
 
@@ -284,7 +284,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.removeCriteria = function(criteria) {
     var i = $scope.criteriaModel.indexOf(criteria);
     $scope.criteriaModel.splice(i, 1);
-  }
+  };
 
   $scope.newNode = function() {
     NodeList.save({
