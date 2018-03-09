@@ -135,11 +135,77 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 })
 
 .controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeTreeList, TypeList, NodeList) {
-
   $scope.lang = $translate.use();
 
   $scope.query = ($location.search()).q || "";
+  $scope.criteria = ($location.search()).c || "";
+  $scope.criteriaModel = [];
+
   $scope.max = 50;
+
+  function parseCriteriaModel(type, criteria) {
+    if (criteria.length == 0) {
+      return [];
+    }
+
+    var criteriaModel = [];
+    var refAttrIndex = type.referenceAttributes.reduce(function(map, attr) {
+      map["r." + attr.id + ".id"] = attr;
+      return map;
+    }, {});
+
+    var clauses = criteria.split(" AND ");
+
+    for (var i = 0; i < clauses.length; i++) {
+      var innerClauses = clauses[i]
+        .substring(1, clauses[i].length - 1)
+        .split(" OR ");
+
+      var filter = {
+        attribute: null,
+        values: []
+      };
+
+      for (var j = 0; j < innerClauses.length; j++) {
+        var attrAndValue = innerClauses[j].split(":");
+        var attr = refAttrIndex[attrAndValue[0]];
+
+        filter.attribute = attr;
+        filter.values.push({
+          type: attr.range,
+          id: attrAndValue[1]
+        });
+      }
+
+      criteriaModel.push(filter);
+    }
+
+    return criteriaModel;
+  }
+
+  function criteriaModelToString(criteriaModel) {
+    var clauses = [];
+    for (var i = 0; i < criteriaModel.length; i++) {
+      var attribute = criteriaModel[i].attribute;
+      var values = criteriaModel[i].values;
+
+      var innerClauses = [];
+      for (var j = 0; j < values.length; j++) {
+        innerClauses.push("r." + attribute.id + ".id:" + values[j].id);
+      }
+      if (innerClauses.length > 0) {
+        clauses.push("(" + innerClauses.join(" OR ") + ")");
+      }
+    }
+    return clauses.join(" AND ");
+  }
+
+  $scope.$watch('criteriaModel', function(criteriaModel) {
+    if (criteriaModel && criteriaModel.length > 0) {
+      $scope.criteria = criteriaModelToString(criteriaModel);
+      $scope.searchNodes($scope.query, $scope.criteria);
+    }
+  }, true);
 
   $scope.graph = Graph.get({
     graphId: $routeParams.graphId
@@ -149,7 +215,8 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     graphId: $routeParams.graphId,
     typeId: $routeParams.typeId
   }, function(type) {
-    $scope.searchNodes(($location.search()).q || "");
+    $scope.criteriaModel = parseCriteriaModel(type, $scope.criteria);
+    $scope.searchNodes($scope.query, $scope.criteria);
   });
 
   $scope.types = TypeList.query({
@@ -161,7 +228,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     $scope.searchNodes(($location.search()).q || "");
   };
 
-  $scope.searchNodes = function(query) {
+  $scope.searchNodes = function(query, criteria) {
     var where = "";
 
     var tokens = (query.match(/\S+/g) || []);
@@ -183,6 +250,14 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       where = whereProperties.join(" OR ");
     }
 
+    if (criteria.length > 0) {
+      if (where.length > 0) {
+        where = "(" + where + ") AND (" + criteria + ")";
+      } else {
+        where = criteria;
+      }
+    }
+
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
@@ -193,10 +268,23 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     }, function(nodes) {
       $scope.nodes = nodes;
       $location.search({
-        q: query
+        q: query,
+        c: criteria
       }).replace();
     });
   };
+
+  $scope.addCriteria = function(refAttr) {
+    $scope.criteriaModel.push({
+      attribute: refAttr,
+      values: []
+    });
+  };
+
+  $scope.removeCriteria = function(criteria) {
+    var i = $scope.criteriaModel.indexOf(criteria);
+    $scope.criteriaModel.splice(i, 1);
+  }
 
   $scope.newNode = function() {
     NodeList.save({

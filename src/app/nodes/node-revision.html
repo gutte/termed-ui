@@ -4,7 +4,7 @@
         {{graph.properties.prefLabel | localizeValue}}
     </a></li>
     <li><a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes">
-        {{type.properties.prefLabel | localizeValue}}
+        {{type.properties.prefLabel | localizeValue:type.id}}
     </a></li>
     <li><a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
         {{node.properties.prefLabel | localizeValue:('unnamed' | translate)}}

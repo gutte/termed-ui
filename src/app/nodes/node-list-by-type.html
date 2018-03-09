@@ -4,7 +4,7 @@
     {{graph.properties.prefLabel | localizeValue}}
   </a></li>
   <li class="active">
-    {{type.properties.prefLabel | localizeValue}}
+    {{type.properties.prefLabel | localizeValue:type.id}}
   </li>
 </ol>
 
@@ -61,14 +61,71 @@
 
 <div class="row">
   <div class="col-md-10 col-sm-8">
+
     <div class="input-group">
       <div class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
       </div>
       <input class="form-control" ng-model="query"
-             ng-change="searchNodes(query)" ng-model-options="{debounce: 250}"
+             ng-change="searchNodes(query, criteria)" ng-model-options="{debounce: 250}"
              placeholder="{{'search' | translate | capitalize}} {{type.properties.prefLabel | localizeValue | lowercase}}"
              type="text">
+    </div>
+
+    <div style="margin-top: 10px" ng-show="type.referenceAttributes.length > 0" >
+      <div class="panel panel-default" ng-show="criteriaModel.length > 0" style="margin: 15px 0;">
+        <div class="panel-heading panel-heading-xs">
+          <small>
+            {{'filters' | translate | capitalize}}
+          </small>
+        </div>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>
+              <small>{{'field' | translate | capitalize}}</small>
+            </th>
+            <th>
+              <small>{{'acceptedValues' | translate | capitalize}}</small>
+            </th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="c in criteriaModel">
+            <td style="vertical-align:middle" width="12%">
+              {{c.attribute.properties.prefLabel | localizeValue:c.attribute.id}}
+            </td>
+            <td style="vertical-align:middle">
+              <div thl-select-node class="form-control"
+                   ref-attr="c.attribute"
+                   placeholder="{{'searchValue' | translate | capitalize}}"
+                   ng-model="c.values" multiple="true"></div>
+            </td>
+            <td class="text-left" style="vertical-align:middle" width="2%">
+              <button class="btn btn-default btn-sm" ng-click="removeCriteria(c)">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-xs btn-link dropdown-toggle" type="button" id="select-filter"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{'add' | translate | capitalize}} {{'filter' | translate}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="select-filter">
+          <li ng-repeat="refAttr in type.referenceAttributes" ng-click="addCriteria(refAttr)">
+            <a>{{refAttr.properties.prefLabel | localizeValue:refAttr.id}}</a>
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
   <div class="col-md-2 col-sm-4">

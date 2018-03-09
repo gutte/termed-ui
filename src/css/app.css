@@ -6,6 +6,17 @@ dd {
     margin-bottom: 25px;
 }
 
+.panel > table thead th:first-child, .panel > table tbody td:first-child {
+    padding-left: 16px;
+}
+.panel > table thead th:last-child, .panel > table tbody td:last-child {
+    padding-right: 16px;
+}
+
+.panel-heading-xs {
+    padding: 2px 15px;
+}
+
 .page-header-info {
     margin-top: -18px;
     margin-bottom: 18px;
