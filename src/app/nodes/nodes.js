@@ -200,9 +200,12 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     return clauses.join(" AND ");
   }
 
-  $scope.$watch('criteriaModel', function(criteriaModel) {
+  $scope.$watch('criteriaModel', function(criteriaModel, oldCriteriaModel) {
     if (criteriaModel && criteriaModel.length > 0) {
       $scope.criteria = criteriaModelToString(criteriaModel);
+      $scope.searchNodes($scope.query, $scope.criteria);
+    } else if (criteriaModel.length == 0 && oldCriteriaModel.length > 0) {
+      $scope.criteria = "";
       $scope.searchNodes($scope.query, $scope.criteria);
     }
   }, true);
