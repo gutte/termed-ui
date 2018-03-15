@@ -228,7 +228,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
   $scope.loadMoreResults = function() {
     $scope.max += 50;
-    $scope.searchNodes(($location.search()).q || "");
+    $scope.searchNodes(($location.search()).q || "", ($location.search()).c || "");
   };
 
   $scope.searchNodes = function(query, criteria) {
