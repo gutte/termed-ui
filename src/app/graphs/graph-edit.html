@@ -266,6 +266,14 @@
                 <thl-graph-permissions-edit permissions-map="type.permissions"
                                             graph-roles="graph.roles"></thl-graph-permissions-edit>
 
+                <button class="btn btn-xs btn-default"
+                        style="margin-top:-30px"
+                        ng-show="graph.roles && graph.roles.length > 0"
+                        ng-click="copyTypePermissionsToAttributes(type)">
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                    {{'copyPermissionsToAttributes' | translate | capitalize}}
+                </button>
+
               <!-- /body -->
             </div>
             <div class="modal-footer">

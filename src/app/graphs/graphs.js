@@ -166,6 +166,22 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
     $scope.types.splice(i, 1);
   };
 
+  $scope.copyTypePermissionsToAttributes = function(type) {
+    if (!type.permissions) {
+      return;
+    }
+    if (type.textAttributes) {
+      type.textAttributes.forEach(function(a) {
+        a.permissions = angular.copy(type.permissions);
+      });
+    }
+    if (type.referenceAttributes) {
+      type.referenceAttributes.forEach(function(a) {
+        a.permissions = angular.copy(type.permissions);
+      });
+    }
+  };
+
   $scope.newTextAttribute = function(type) {
     if (!type.textAttributes) {
       type.textAttributes = [];
