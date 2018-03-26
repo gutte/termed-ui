@@ -285,7 +285,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
       typeId: $routeParams.typeId,
-      select: 'id,code,uri,type,properties.*',
+      select: 'id,code,uri,type,p.*,r.*',
       where: where,
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
