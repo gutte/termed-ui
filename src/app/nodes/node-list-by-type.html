@@ -39,9 +39,20 @@
 <ul class="nav nav-tabs types">
   <li role="presentation" data-toggle="tooltip" data-placement="top"
       title="{{'all' | translate | capitalize}}" thl-tooltip>
-    <a ng-href="#/graphs/{{graph.id}}/nodes">
-      <span class="glyphicon glyphicon-home"></span>
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-home"></span> <span class="caret"></span>
     </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a ng-href="#/graphs/{{graph.id}}/nodes/">{{'all' | translate | capitalize}}</a>
+      </li>
+      <li role="separator" class="divider"></li>
+      <li ng-repeat="cls in types">
+        <a ng-href="#/graphs/{{graph.id}}/types/{{cls.id}}/nodes/">
+          {{cls.properties.prefLabel | localizeValue:cls.id}}
+        </a>
+      </li>
+    </ul>
   </li>
   <li role="presentation" class="{{t.id == type.id && 'active'}}" ng-repeat="t in types"
       data-toggle="tooltip" data-placement="top" title="{{t.properties.prefLabel | localizeValue:t.id}}"
@@ -72,29 +83,19 @@
              type="text">
     </div>
 
-    <div style="margin-top: 10px" ng-show="type.referenceAttributes.length > 0" >
-      <div class="panel panel-default" ng-show="criteriaModel.length > 0" style="margin: 20px 0 10px 0">
+    <div style="margin-top: 5px" ng-show="type.referenceAttributes.length > 0" >
+      <div class="panel panel-info" ng-show="criteriaModel.length > 0" style="margin: 15px 0 5px 0">
         <div class="panel-heading panel-heading-xs">
-          <small>
-            {{'filters' | translate | capitalize}}
-          </small>
+          <small>{{'filters' | translate | capitalize}}</small>
         </div>
-        <table class="table">
-          <thead>
-          <tr>
-            <th>
-              <small>{{'field' | translate | capitalize}}</small>
-            </th>
-            <th>
-              <small>{{'acceptedValues' | translate | capitalize}}</small>
-            </th>
-            <th></th>
-          </tr>
-          </thead>
+        <table class="table table-condensed">
           <tbody>
           <tr ng-repeat="c in criteriaModel">
-            <td style="vertical-align:middle" width="12%">
-              {{c.attribute.properties.prefLabel | localizeValue:c.attribute.id}}
+            <td style="vertical-align:middle;line-height:1;" width="15%"
+                title="{{c.attribute.properties.prefLabel | localizeValue:c.attribute.id}}">
+              <small>
+                {{c.attribute.properties.prefLabel | localizeValue:c.attribute.id | limit:20}}
+              </small>
             </td>
             <td style="vertical-align:middle">
               <div thl-select-node class="form-control"
@@ -125,8 +126,8 @@
           </li>
         </ul>
       </div>
-
     </div>
+
   </div>
   <div class="col-md-2 col-sm-4">
     <button type="submit" class="btn btn-primary btn-block" ng-click="newNode()">
@@ -139,38 +140,119 @@
 
 <br>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>{{'label' | translate | capitalize}}</th>
-    <th width="20%">{{'code' | translate | capitalize}}</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-repeat="node in nodes">
-    <td>
-      <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
-         title="{{node.uri}}">
-        {{node.properties | localizeAnyValue:'prefLabel'}}
-      </a>
-    </td>
-    <td>
-      <small>
-        <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
-           class="text-muted"
-           title="{{node.uri}}">
-          {{node.code}}
-        </a>
-      </small>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="panel panel-default">
 
-<button class="btn btn-default btn-sm {{nodes.length == max || 'disabled'}}"
-        ng-click="loadMoreResults()">
-  {{'showMoreResults' | translate | capitalize}}
-</button>
+  <div class="panel-heading panel-heading-sm">
+    <div class="row">
+      <div class="col-xs-6">
+        <h2 class="panel-title panel-title-sm">
+          {{'results' | translate | capitalize}}: {{count}}
+        </h2>
+      </div>
+      <div class="col-xs-6 text-right">
+        <button class="btn btn-link btn-xs {{showAllFields || 'disabled'}}"
+                ng-click="showAllFields = false">
+          {{'asTable' | translate}}
+        </button>
+        <span class="text-muted">|</span>
+        <button class="btn btn-link btn-xs {{!showAllFields || 'disabled'}}"
+                ng-click="showAllFields = true">
+          {{'expanded' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table" ng-if="!showAllFields">
+    <thead class="text-muted">
+    <tr>
+      <th>
+        <small>{{'label' | translate | capitalize}}</small>
+      </th>
+      <th width="20%">
+        <small>{{'code' | translate | capitalize}}</small>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="node in nodes">
+      <td>
+        <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
+           title="{{node.uri}}">
+          {{node.properties | localizeAnyValue:'prefLabel'}}
+        </a>
+      </td>
+      <td>
+        <small>
+          <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}"
+             title="{{node.uri}}"
+             class="text-muted">
+            {{node.code}}
+          </a>
+        </small>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="panel-body" ng-if="showAllFields" ng-repeat="node in nodes"
+       style="border-bottom: thin dotted #ddd;">
+    <h3 style="margin-top:12px">
+      <a ng-href="#/graphs/{{node.type.graph.id}}/types/{{node.type.id}}/nodes/{{node.id}}">
+        {{node.properties.prefLabel | localizeValue}}
+      </a>
+    </h3>
+
+    <div class="text-muted" style="margin: -10px 0 10px 0;">
+      <small>{{node.uri}}</small>
+      <small>{{node.code}}</small>
+      <small ng-if="!node.code && !node.uri">-</small>
+    </div>
+
+    <div ng-repeat="textAttr in type.textAttributes">
+      <dl ng-if="node.properties[textAttr.id]">
+        <dt>{{textAttr.properties.prefLabel | localizeValue:textAttr.id | capitalize}}</dt>
+        <dd>
+          <div ng-repeat="langValue in node.properties[textAttr.id]">
+            <code class="text-muted">{{langValue.lang}}</code> {{langValue.value}}
+          </div>
+        </dd>
+      </dl>
+    </div>
+
+    <div ng-repeat="refAttr in type.referenceAttributes">
+      <dl ng-if="node.references[refAttr.id].length > 0">
+        <dt>{{refAttr.properties.prefLabel | localizeValue:refAttr.id | capitalize}}</dt>
+        <dd>
+          <div ng-repeat="n in node.references[refAttr.id]">
+            <a ng-href="#/graphs/{{n.type.graph.id}}/types/{{n.type.id}}/nodes/{{n.id}}"
+               title="{{n.uri}} {{n.code}}">
+              &rarr;
+              {{n.properties.prefLabel | localizeValue:('unnamed' | translate)}}
+            </a>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-xs-6">
+    <button class="btn btn-default btn-sm {{nodes.length == max || 'disabled'}}"
+            ng-click="loadMoreResults()">
+      {{'showMoreResults' | translate | capitalize}}
+    </button>
+  </div>
+  <div class="col-xs-6 text-right">
+    <button class="btn btn-link btn-xs"
+            ng-show="nodes.length == max"
+            ng-click="loadAllResults()">
+      {{'showAllResults' | translate | capitalize}} ({{count}})
+    </button>
+  </div>
+</div>
 
 <hr>
 

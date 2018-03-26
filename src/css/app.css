@@ -17,6 +17,15 @@ dd {
     padding: 2px 15px;
 }
 
+.panel-heading-sm {
+    padding: 5px 15px;
+}
+
+.panel-title-sm {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
 .page-header-info {
     margin-top: -18px;
     margin-bottom: 18px;

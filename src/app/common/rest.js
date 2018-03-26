@@ -42,12 +42,34 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/graphs/:graphId/node-trees');
 })
 
+.factory('GraphNodeCount', function($resource) {
+  return $resource('api/graphs/:graphId/node-count', null, {
+    'get': {
+      method: 'GET',
+      transformResponse: function(data) {
+        return { count: data };
+      }
+    }
+  });
+})
+
 .factory('TypeNodeList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/nodes');
 })
 
 .factory('TypeNodeTreeList', function($resource) {
   return $resource('api/graphs/:graphId/types/:typeId/node-trees');
+})
+
+.factory('TypeNodeCount', function($resource) {
+  return $resource('api/graphs/:graphId/types/:typeId/node-count', null, {
+    'get': {
+      method: 'GET',
+      transformResponse: function(data) {
+        return { count: data };
+      }
+    }
+  });
 })
 
 .factory('Node', function($resource) {

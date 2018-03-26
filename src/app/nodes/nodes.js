@@ -44,7 +44,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   });
 })
 
-.controller('NodeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeTreeList, NodeList, Node, TypeList) {
+.controller('NodeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeTreeList, GraphNodeCount, NodeList, Node, TypeList) {
 
   $scope.lang = $translate.use();
 
@@ -55,22 +55,25 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     graphId: $routeParams.graphId
   });
 
-  var typeIndex = {};
+  $scope.typesById = {};
 
   $scope.types = TypeList.query({
     graphId: $routeParams.graphId
   }, function(types) {
     types.forEach(function(c) {
-      typeIndex[c.id] = c;
+      $scope.typesById[c.id] = c;
     });
+    // load initial results
+    $scope.searchNodes(($location.search()).q || "");
   });
-
-  $scope.typeById = function(typeId) {
-    return typeIndex[typeId];
-  };
 
   $scope.loadMoreResults = function() {
     $scope.max += 50;
+    $scope.searchNodes(($location.search()).q || "");
+  };
+
+  $scope.loadAllResults = function() {
+    $scope.max = -1;
     $scope.searchNodes(($location.search()).q || "");
   };
 
@@ -93,7 +96,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
           return "p.prefLabel." + $scope.lang + ":" + token + "*^2";
         }).join(" AND "));
 
-        type.textAttributes.slice(0, 5).forEach(function(textAttribute) {
+        type.textAttributes.slice(0, 3).forEach(function(textAttribute) {
           whereTypeProperties.push(tokens.map(function(token) {
             return "p." + textAttribute.id + ":" + token + "*";
           }).join(" AND "));
@@ -105,9 +108,16 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       where.push("(" + whereType.join(" AND ") + ")");
     });
 
+    GraphNodeCount.get({
+      graphId: $routeParams.graphId,
+      where: where.join(" OR ")
+    }, function(result) {
+      $scope.count = result.count;
+    });
+
     GraphNodeTreeList.query({
       graphId: $routeParams.graphId,
-      select: 'id,code,uri,type,properties.*',
+      select: 'id,code,uri,type,p.*,r.*',
       where: where.join(" OR "),
       max: $scope.max,
       sort: query ? '' : 'properties.prefLabel.' + $scope.lang + '.sortable'
@@ -130,11 +140,9 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     });
   };
 
-  $scope.searchNodes(($location.search()).q || "");
-
 })
 
-.controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeTreeList, TypeList, NodeList) {
+.controller('NodeListByTypeCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, Type, TypeNodeTreeList, TypeNodeCount, TypeList, NodeList) {
   $scope.lang = $translate.use();
 
   $scope.query = ($location.search()).q || "";
@@ -231,6 +239,11 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     $scope.searchNodes(($location.search()).q || "", ($location.search()).c || "");
   };
 
+  $scope.loadAllResults = function() {
+    $scope.max = -1;
+    $scope.searchNodes(($location.search()).q || "", ($location.search()).c || "");
+  };
+
   $scope.searchNodes = function(query, criteria) {
     var where = "";
 
@@ -260,6 +273,14 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
         where = criteria;
       }
     }
+
+    TypeNodeCount.get({
+      graphId: $routeParams.graphId,
+      typeId: $routeParams.typeId,
+      where: where
+    }, function(result) {
+      $scope.count = result.count;
+    });
 
     TypeNodeTreeList.query({
       graphId: $routeParams.graphId,
