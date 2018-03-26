@@ -49,7 +49,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.lang = $translate.use();
 
   $scope.query = ($location.search()).q || "";
-  $scope.max = 50;
+  $scope.max = 25;
 
   $scope.graph = Graph.get({
     graphId: $routeParams.graphId
@@ -149,7 +149,7 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
   $scope.criteria = ($location.search()).c || "";
   $scope.criteriaModel = [];
 
-  $scope.max = 50;
+  $scope.max = 25;
 
   function parseCriteriaModel(type, criteria) {
     if (criteria.length === 0) {

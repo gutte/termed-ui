@@ -17,16 +17,16 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   });
 })
 
-.controller('GraphListCtrl', function($scope, $location, $translate, GraphList, NodeTreeList) {
+.controller('GraphListCtrl', function($scope, $location, $translate, $filter, GraphList, NodeTreeList) {
 
   $scope.lang = $translate.use();
 
-  $scope.query = ($location.search()).q || "";
+  $scope.query = "";
   $scope.max = 50;
 
   $scope.loadMoreResults = function() {
     $scope.max += 50;
-    $scope.searchNodes(($location.search()).q || "");
+    $scope.searchNodes($scope.query);
   };
 
   $scope.searchNodes = function(query) {
@@ -39,9 +39,6 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
       max: $scope.max
     }, function(nodes) {
       $scope.nodes = nodes;
-      $location.search({
-        q: $scope.query
-      }).replace();
     });
   };
 
@@ -54,6 +51,10 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
       graphIndex[s.id] = s;
     });
   });
+
+  $scope.localizedPrefLabel = function(graph) {
+    return $filter("localizeValue")(graph.properties.prefLabel);
+  };
 
   $scope.graphById = function(graphId) {
     return graphIndex[graphId];
@@ -73,8 +74,6 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
       $location.path('/graphs/' + graph.id + '/edit');
     });
   };
-
-  $scope.searchNodes(($location.search()).q || "");
 
 })
 
