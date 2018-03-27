@@ -130,6 +130,10 @@ angular.module('termed.rest', ['ngResource'])
   return $resource('api/users');
 })
 
+.factory('GraphDump', function($resource) {
+  return $resource('api/graphs/:graphId/dump');
+})
+
 .factory('Dump', function($resource) {
   return $resource('api/dump');
 });

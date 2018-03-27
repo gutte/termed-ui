@@ -1,8 +1,6 @@
 <ol class="breadcrumb">
   <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-  <li class="active">
-    {{'admin' | translate | capitalize}}
-  </li>
+  <li class="active">{{'admin' | translate | capitalize}}</li>
 </ol>
 
 <div class="alert alert-danger" role="alert" ng-show="error">
@@ -15,15 +13,42 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">{{'reindex' | translate | capitalize}}</h3>
+    <h3 class="panel-title">{{'indicesAndCaches' | translate | capitalize}}</h3>
   </div>
 
   <div class="panel-body">
+    <h4>{{'reindex' | translate | capitalize}}</h4>
+    <p>{{'reindexHelp' | translate}}</p>
 
-    <a ng-click="reindex()" class="btn btn-warning {{ indexing ? 'disabled' : ''}}">
-      <span class="glyphicon glyphicon-refresh spinning" ng-show="indexing"></span>
-      {{'reindex' | translate | capitalize}}
+    <div class="btn-group">
+      <button type="button" class="btn btn-warning dropdown-toggle {{indexing ? 'disabled' : ''}}"
+              data-toggle="dropdown">
+        <span class="glyphicon glyphicon-refresh spinning" ng-show="indexing"></span>
+        {{'reindex' | translate | capitalize}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="graph in graphs | orderBy:localizedPrefLabel">
+          <a ng-click="reindexGraph(graph.id)">
+            {{graph.properties.prefLabel | localizeValue}}
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a ng-click="reindexAll()">{{'all' | translate | capitalize}}</a>
+        </li>
+      </ul>
+    </div>
+    <hr>
+    <h4>{{'invalidateCaches' | translate | capitalize}}</h4>
+    <p>{{'invalidateCachesHelp' | translate}}</p>
+    <a ng-click="invalidateCaches()"
+       class="btn btn-warning {{ invalidatingCaches ? 'disabled' : ''}}">
+      <span class="glyphicon glyphicon-refresh spinning" ng-show="invalidatingCaches"></span>
+      {{'invalidateCaches' | translate | capitalize}}
     </a>
+    <br>
+    <br>
   </div>
 </div>
 

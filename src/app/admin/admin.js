@@ -16,9 +16,15 @@ angular.module('termed.admin', ['ngRoute'])
   });
 })
 
-.controller('AdminCtrl', function($scope, $http) {
+.controller('AdminCtrl', function($scope, $http, $filter, GraphList) {
 
-  $scope.reindex = function() {
+  $scope.graphs = GraphList.query();
+
+  $scope.localizedPrefLabel = function(graph) {
+    return $filter("localizeValue")(graph.properties.prefLabel);
+  };
+
+  $scope.reindexAll = function() {
     $scope.indexing = true;
 
     $http({
@@ -32,8 +38,36 @@ angular.module('termed.admin', ['ngRoute'])
     });
   };
 
+  $scope.reindexGraph = function(graphId) {
+    $scope.indexing = true;
+
+    $http({
+      method: 'DELETE',
+      url: 'api/graphs/' + graphId + '/index'
+    }).then(function(success) {
+      $scope.indexing = false;
+    }, function(error) {
+      $scope.error = error;
+      $scope.indexing = false;
+    });
+  };
+
+  $scope.invalidateCaches = function() {
+    $scope.invalidatingCaches = true;
+
+    $http({
+      method: 'DELETE',
+      url: 'api/caches'
+    }).then(function(success) {
+      $scope.invalidatingCaches = false;
+    }, function(error) {
+      $scope.error = error;
+      $scope.invalidatingCaches = false;
+    });
+  };
+
   $scope.remote = {
-    url: "http://localhost:8080/api/dump",
+    url: "http://<remote-termed>/api/graphs/<graph-id>/dump",
     username: "admin",
     password: "admin"
   };

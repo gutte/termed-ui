@@ -77,7 +77,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
 
 })
 
-.controller('GraphEditCtrl', function($scope, $routeParams, $location, $translate, Graph, Type, TypeList, PropertyList, GraphNodeList, TypeNodeList, Dump) {
+.controller('GraphEditCtrl', function($scope, $routeParams, $location, $translate, Graph, Type, TypeList, PropertyList, GraphNodeList, TypeNodeList, GraphDump) {
 
   $scope.lang = $translate.use();
 
@@ -102,7 +102,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
   };
 
   $scope.duplicate = function() {
-    Dump.save({ sourceGraphId: $routeParams.graphId, copy: true }, {}, function() {
+    GraphDump.save({ graphId: $routeParams.graphId, copy: true }, {}, function() {
       $location.path('/graphs');
     }, function(error) {
       $scope.error = error;
