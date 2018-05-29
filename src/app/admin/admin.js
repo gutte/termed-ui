@@ -24,7 +24,7 @@ angular.module('termed.admin', ['ngRoute'])
     return $filter("localizeValue")(graph.properties.prefLabel);
   };
 
-  $scope.resetGraphNodeCodes = function(graphId) {
+  $scope.deleteGraphNodeCodes = function(graphId) {
     $scope.processing = true;
 
     $http({

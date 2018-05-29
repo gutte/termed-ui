@@ -17,19 +17,19 @@
   </div>
 
   <div class="panel-body">
-    <h4>{{'resetCodes' | translate | capitalize}}</h4>
-    <p>{{'resetCodesHelp' | translate}}</p>
+    <h4>{{'deleteCodes' | translate | capitalize}}</h4>
+    <p>{{'deleteCodesHelp' | translate}}</p>
 
     <div class="btn-group">
       <button type="button" class="btn btn-warning dropdown-toggle {{processing ? 'disabled' : ''}}"
               data-toggle="dropdown">
         <span class="glyphicon glyphicon-refresh spinning" ng-show="processing"></span>
-        {{'resetCodes' | translate | capitalize}}
+        {{'deleteCodes' | translate | capitalize}}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
         <li ng-repeat="graph in graphs | orderBy:localizedPrefLabel">
-          <a ng-click="resetGraphNodeCodes(graph.id)">
+          <a ng-click="deleteGraphNodeCodes(graph.id)">
             {{graph.properties.prefLabel | localizeValue}}
           </a>
         </li>
