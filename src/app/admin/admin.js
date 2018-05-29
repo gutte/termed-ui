@@ -24,6 +24,20 @@ angular.module('termed.admin', ['ngRoute'])
     return $filter("localizeValue")(graph.properties.prefLabel);
   };
 
+  $scope.resetGraphNodeCodes = function(graphId) {
+    $scope.processing = true;
+
+    $http({
+      method: 'DELETE',
+      url: 'api/graphs/' + graphId + '/node-codes'
+    }).then(function(success) {
+      $scope.processing = false;
+    }, function(error) {
+      $scope.error = error;
+      $scope.processing = false;
+    });
+  };
+
   $scope.reindexAll = function() {
     $scope.indexing = true;
 
