@@ -381,7 +381,7 @@
 
                     <select class="form-control" ng-model="referenceAttribute.range.id">
                         <option ng-repeat="type in types" value="{{type.id}}">
-                            {{type.properties.prefLabel | localizeValue}}
+                            {{type.properties.prefLabel | localizeValue:type.id}}
                         </option>
                     </select>
                 </div>
