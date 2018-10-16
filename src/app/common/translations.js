@@ -87,7 +87,7 @@ angular.module('termed.translations', ['pascalprecht.translate', 'ngSanitize'])
     addNew: 'lisää uusi',
     new_: 'uusi',
     field: 'kenttä',
-    filter: 'hakutosten suodatin',
+    filter: 'hakutulosten suodatin',
     filters: 'hakutulosten suodattimet',
     filterResults: 'suodata hakutuloksia',
     acceptedValues: 'sallitut arvot',
