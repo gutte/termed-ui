@@ -18,7 +18,7 @@
     <button class="btn btn-link btn-xs btn-default dropdown-toggle" type="button" id="export-menu"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
       <span class="glyphicon glyphicon-download-alt"></span>
-      {{'download' | translate | capitalize}}
+      {{'download' | translate | capitalize}} {{'all' | translate}}
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="export-menu">
@@ -159,6 +159,20 @@
                 ng-click="showAllFields = true">
           {{'expanded' | translate}}
         </button>
+        <span class="text-muted">|</span>
+        <div class="btn-group dropdown">
+          <button class="btn btn-link btn-xs btn-default dropdown-toggle" type="button" id="export-filtered-menu"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="glyphicon glyphicon-download-alt"></span>
+            {{'download' | translate}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="export-filtered-menu">
+            <li><a ng-href="api/graphs/{{graph.id}}/types/{{type.id}}/node-trees?{{whereStr}}&select=*&max=-1" type="application/json">JSON</a></li>
+            <li><a ng-href="api/graphs/{{graph.id}}/types/{{type.id}}/nodes.csv?{{whereStr}}" type="text/csv">CSV (UTF-8)</a></li>
+            <li><a ng-href="api/graphs/{{graph.id}}/types/{{type.id}}/nodes.csv?{{whereStr}}&delimiter=SEMICOLON&lineBreak=CRLF&quoteAll=true&charset=ISO-8859-1" type="text/csv">CSV (Excel, ISO-8859-1)</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

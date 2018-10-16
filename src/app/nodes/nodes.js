@@ -127,6 +127,8 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
         q: query
       }).replace();
     });
+    
+    $scope.whereStr = encodeURI("where=" + where.join(" OR "));
   };
 
   $scope.newNode = function(type) {
@@ -296,6 +298,8 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
         c: criteria
       }).replace();
     });
+    
+    $scope.whereStr = encodeURI("where=" + where);
   };
 
   $scope.addCriteria = function(refAttr) {
