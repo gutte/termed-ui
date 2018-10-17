@@ -157,10 +157,14 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     }
 
     var criteriaModel = [];
-    var refAttrIndex = type.referenceAttributes.reduce(function(map, attr) {
+    var attrIndex = type.referenceAttributes.reduce(function(map, attr) {
       map["r." + attr.id + ".id"] = attr;
       return map;
     }, {});
+    attrIndex = type.textAttributes.reduce(function(map, attr) {
+      map["p." + attr.id] = attr;
+      return map;
+    }, attrIndex);
 
     var clauses = criteria.split(" AND ");
 
@@ -171,18 +175,32 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
 
       var filter = {
         attribute: null,
-        values: []
+        values: [],
+        type: null
       };
 
       for (var j = 0; j < innerClauses.length; j++) {
+
         var attrAndValue = innerClauses[j].split(":");
-        var attr = refAttrIndex[attrAndValue[0]];
+
+        filter.type = attrAndValue[0].split('.')[0];
+
+        var attr = attrIndex[attrAndValue[0]];
+        var value = attrAndValue[1];
 
         filter.attribute = attr;
-        filter.values.push({
-          type: attr.range,
-          id: attrAndValue[1]
-        });
+        if (filter.type == 'r') {
+          filter.values.push({
+            type: attr.range,
+            id: value
+          });
+        } else if (filter.type =='p') {
+          //strip quotation marks
+          filter.values.push({
+            id: value.substring(1,value.length - 1),
+            text: value.substring(1,value.length - 1)
+          });
+        }
       }
 
       criteriaModel.push(filter);
@@ -196,10 +214,15 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     for (var i = 0; i < criteriaModel.length; i++) {
       var attribute = criteriaModel[i].attribute;
       var values = criteriaModel[i].values;
+      var type = criteriaModel[i].type;
 
       var innerClauses = [];
       for (var j = 0; j < values.length; j++) {
-        innerClauses.push("r." + attribute.id + ".id:" + values[j].id);
+        if (type == "r") {
+          innerClauses.push(type +"." + attribute.id + ".id:" + values[j].id);
+        } else if (type == "p"){
+          innerClauses.push(type +"." + attribute.id + ":\"" + values[j].id +"\"");
+        }
       }
       if (innerClauses.length > 0) {
         clauses.push("(" + innerClauses.join(" OR ") + ")");
@@ -298,10 +321,19 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     });
   };
 
-  $scope.addCriteria = function(refAttr) {
+  $scope.addRefCriteria = function(attr) {
     $scope.criteriaModel.push({
-      attribute: refAttr,
-      values: []
+      attribute: attr,
+      values: [],
+      type: "r"
+    });
+  };
+
+  $scope.addTextCriteria = function(attr) {
+    $scope.criteriaModel.push({
+      attribute: attr,
+      values: [],
+      type: "p"
     });
   };
 
