@@ -250,7 +250,7 @@
                 .map(function(result){
                   return {
                     id: result,
-                    text: $sanitize(result)
+                    text: result
                   };
                 });
               query.callback({
