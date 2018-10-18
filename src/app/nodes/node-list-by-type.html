@@ -83,7 +83,7 @@
              type="text">
     </div>
 
-    <div style="margin-top: 5px" ng-show="type.referenceAttributes.length > 0" >
+    <div style="margin-top: 5px">
       <div class="panel panel-info" ng-show="criteriaModel.length > 0" style="margin: 15px 0 5px 0">
         <div class="panel-heading panel-heading-xs">
           <small>{{'filters' | translate | capitalize}}</small>
@@ -130,7 +130,7 @@
           <li ng-repeat="textAttr in type.textAttributes" ng-click="addTextCriteria(textAttr)">
             <a>{{textAttr.properties.prefLabel | localizeValue:textAttr.id}}</a>
           </li>
-          <li role="separator" class="divider"></li>
+          <li role="separator" class="divider" ng-show="type.referenceAttributes.length > 0"></li>
           <li ng-repeat="refAttr in type.referenceAttributes" ng-click="addRefCriteria(refAttr)">
             <a>{{refAttr.properties.prefLabel | localizeValue:refAttr.id}}</a>
           </li>
