@@ -202,6 +202,100 @@
         }, true);
       }
     };
+  })
+
+  .directive('thlSelectProperty', function($q, $timeout, $sanitize, $translate, Node, TypeNodeTreeList) {
+    return {
+      scope: {
+        'ngModel': "=",
+        'textAttr': '='
+      },
+      link: function(scope, elem, attrs) {
+
+        function getLocalizedProperty(property) {
+          var lang = $translate.use();
+
+          if (property && property.length > 0) {
+            for (var i = 0; i < property.length; i++) {
+              if (property[i].lang == lang) {
+                return property[i].value;
+              }
+            }
+            return property[0].value;
+          }
+
+          return "-";
+        }
+
+        elem.select2({
+          allowClear: true,
+          multiple: !!attrs.multiple,
+          query: function(query) {
+            var tokens = (query.term.match(/\S+/g) || []);
+            var where = tokens.map(function(t) { return "p." + scope.textAttr.id + ":" + t + "*"; }).join(" AND ");
+            TypeNodeTreeList.query({
+              graphId: scope.textAttr.domain.graph.id,
+              typeId: scope.textAttr.domain.id,
+              select: "*",
+              where: where
+            }, function(results) {
+              results = results
+                // map to property
+                .map(function(result) {
+                  return getLocalizedProperty(result.properties[scope.textAttr.id]);
+                })
+                // filter unique properties
+                .filter(function(value, index, self){
+                  return self.indexOf(value) === index;
+                })
+                // map to select2 data format
+                .map(function(result){
+                  return {
+                    id: result,
+                    text: result
+                  };
+                });
+              query.callback({
+                results: results
+              });
+            });
+          }
+        });
+
+        elem.select2("container").find("ul.select2-choices").sortable({
+          containment: 'parent',
+          start: function() {
+            elem.select2("onSortStart");
+          },
+          update: function() {
+            elem.select2("onSortEnd");
+          }
+        });
+
+        elem.on('change', function() {
+          scope.$apply(function() {
+            if (!elem.select2('data')) {
+              scope.ngModel = "";
+            } else {
+              scope.ngModel = elem.select2('data');
+            }
+          });
+        });
+
+        scope.$watch('ngModel', function(ngModel) {
+          if (!ngModel) {
+            if (elem.select2('data')) {
+              // defer clean to avoid element change inside $watch
+              $timeout(function() {
+                elem.select2('data', '');
+              });
+            }
+            return;
+          }
+          elem.select2('data', ngModel);
+        }, true);
+      }
+    };
   });
 
 })(window.angular);

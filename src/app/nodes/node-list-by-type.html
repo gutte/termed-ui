@@ -83,7 +83,7 @@
              type="text">
     </div>
 
-    <div style="margin-top: 5px" ng-show="type.referenceAttributes.length > 0" >
+    <div style="margin-top: 5px">
       <div class="panel panel-info" ng-show="criteriaModel.length > 0" style="margin: 15px 0 5px 0">
         <div class="panel-heading panel-heading-xs">
           <small>{{'filters' | translate | capitalize}}</small>
@@ -97,9 +97,15 @@
                 {{c.attribute.properties.prefLabel | localizeValue:c.attribute.id | limit:20}}
               </small>
             </td>
-            <td style="vertical-align:middle">
+            <td style="vertical-align:middle" ng-if="c.type =='r'">
               <div thl-select-node class="form-control"
                    ref-attr="c.attribute"
+                   placeholder="{{'searchValue' | translate | capitalize}}"
+                   ng-model="c.values" multiple="true"></div>
+            </td>
+            <td style="vertical-align:middle" ng-if="c.type =='p'">
+              <div thl-select-property class="form-control"
+                   text-attr="c.attribute"
                    placeholder="{{'searchValue' | translate | capitalize}}"
                    ng-model="c.values" multiple="true"></div>
             </td>
@@ -121,7 +127,11 @@
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="select-filter">
-          <li ng-repeat="refAttr in type.referenceAttributes" ng-click="addCriteria(refAttr)">
+          <li ng-repeat="textAttr in type.textAttributes" ng-click="addTextCriteria(textAttr)">
+            <a>{{textAttr.properties.prefLabel | localizeValue:textAttr.id}}</a>
+          </li>
+          <li role="separator" class="divider" ng-show="type.referenceAttributes.length > 0"></li>
+          <li ng-repeat="refAttr in type.referenceAttributes" ng-click="addRefCriteria(refAttr)">
             <a>{{refAttr.properties.prefLabel | localizeValue:refAttr.id}}</a>
           </li>
         </ul>
