@@ -231,11 +231,13 @@
           allowClear: true,
           multiple: !!attrs.multiple,
           query: function(query) {
+            var tokens = (query.term.match(/\S+/g) || []);
+            var where = tokens.map(function(t) { return "p." + scope.textAttr.id + ":" + t + "*"; }).join(" AND ");
             TypeNodeTreeList.query({
               graphId: scope.textAttr.domain.graph.id,
               typeId: scope.textAttr.domain.id,
               select: "*",
-              where: "(p." + scope.textAttr.id + ":" + query.term + "*)"
+              where: where
             }, function(results) {
               results = results
                 // map to property
