@@ -219,7 +219,7 @@ angular.module('termed.graphs', ['ngRoute', 'termed.rest', 'termed.graphs.proper
         prefLabel: [
           {
             lang: "fi",
-            value: "Uusi viiteattribuutit"
+            value: "Uusi viiteattribuutti"
           }
         ]
       },
