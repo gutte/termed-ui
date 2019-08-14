@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li><a ng-href="#/">{{'termed' | translate}}</a></li>
-  <li><a ng-href="#/graphs/{{type.graph.id}}/nodes">
+  <li><a ng-href="#/graphs/{{type.graph.id}}/{{graph.properties.configGraphHomeLayout[0].value || 'nodes'}}">
     {{graph.properties.prefLabel | localizeValue}}
   </a></li>
   <li class="active">
@@ -44,7 +44,10 @@
     </a>
     <ul class="dropdown-menu">
       <li>
-        <a ng-href="#/graphs/{{graph.id}}/nodes/">{{'all' | translate | capitalize}}</a>
+        <a ng-href="#/graphs/{{graph.id}}/nodes/">{{'allNodes' | translate | capitalize}}</a>
+      </li>
+      <li>
+        <a ng-href="#/graphs/{{graph.id}}/types/">{{'typeList' | translate | capitalize}}</a>
       </li>
       <li role="separator" class="divider"></li>
       <li ng-repeat="cls in types">

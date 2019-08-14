@@ -11,6 +11,12 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     reloadOnSearch: false
   })
 
+  .when('/graphs/:graphId/types', {
+    templateUrl: 'app/nodes/type-list.html',
+    controller: 'TypeListCtrl',
+    reloadOnSearch: false
+  })
+
   .when('/graphs/:graphId/types/:typeId/nodes', {
     templateUrl: 'app/nodes/node-list-by-type.html',
     controller: 'NodeListByTypeCtrl',
@@ -42,6 +48,33 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
     templateUrl: 'app/nodes/node-edit.html',
     controller: 'NodeEditCtrl'
   });
+})
+
+.controller('TypeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeTreeList, GraphNodeCount, TypeList, NodeList) {
+  $scope.lang = $translate.use();
+  $scope.graph = Graph.get({
+    graphId: $routeParams.graphId
+  });
+  $scope.typesById = {};
+
+  $scope.types = TypeList.query({
+    graphId: $routeParams.graphId
+  }, function(types) {
+    types.forEach(function(c) {
+      $scope.typesById[c.id] = c;
+    });
+  });
+
+  $scope.newNode = function(type) {
+    NodeList.save({
+      graph: $scope.graph,
+      type: type
+    }, function(node) {
+      $location.path('/graphs/' + node.type.graph.id + '/types/' + node.type.id + '/nodes/' + node.id + '/edit');
+    }, function(error) {
+      $scope.error = error;
+    });
+  };
 })
 
 .controller('NodeListCtrl', function($scope, $route, $location, $routeParams, $translate, Graph, GraphNodeTreeList, GraphNodeCount, NodeList, Node, TypeList) {
