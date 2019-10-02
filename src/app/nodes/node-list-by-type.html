@@ -13,7 +13,18 @@
     <span class="glyphicon glyphicon-list"></span>
     {{'allNodes' | translate | capitalize}}
   </a>
-
+  <div class="btn-group">
+    <button class="btn btn-link btn-xs btn-default dropdown-toggle" type="button" id="import-menu"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <span class="glyphicon glyphicon-upload"></span>
+      {{'upload' | translate | capitalize}}
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="export-menu" ng-controller="filetypeController">
+      <li upload-csv graph="graph" type="type" filetype="utf8"></li>
+      <li upload-csv graph="graph" type="type" filetype="excel"></li>
+    </ul>
+  </div>
   <div class="btn-group">
     <button class="btn btn-link btn-xs btn-default dropdown-toggle" type="button" id="export-menu"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -28,7 +39,14 @@
     </ul>
   </div>
 </div>
-
+<div style="clear:both;">
+  <div class="alert alert-danger" role="alert" ng-show="error">
+      <span class="glyphicon glyphicon-alert"></span> {{error}}
+  </div>
+  <div class="alert alert-success" role="success" ng-show="success">
+      <span class="glyphicon glyphicon-ok"></span> {{success}}
+  </div>
+</div>
 <h1 class="page-header">
   {{graph.properties.prefLabel | localizeValue}}
 </h1>

@@ -1,6 +1,6 @@
 (function (angular) { 'use strict';
 
-angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.references', 'termed.nodes.referrers', 'termed.nodes.properties', 'termed.nodes.revisions'])
+angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.references', 'termed.nodes.referrers', 'termed.nodes.properties', 'termed.nodes.revisions', 'termed.nodes.upload'])
 
 .config(function($routeProvider) {
   $routeProvider
@@ -389,6 +389,17 @@ angular.module('termed.nodes', ['ngRoute', 'termed.rest', 'termed.nodes.referenc
       $scope.error = error;
     });
   };
+
+  $scope.$on('upload-success', function(event, message) {
+    $scope.success = message;
+    $scope.error = "";
+    $scope.searchNodes($scope.query, $scope.criteria);
+  });
+
+  $scope.$on('upload-error', function(event, message) {
+    $scope.error = message;
+    $scope.success = "";
+  });
 
 })
 
