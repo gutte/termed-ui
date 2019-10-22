@@ -227,34 +227,53 @@
           return "-";
         }
 
+        function queryNodeAttributeValues(terms, oldResults, callback) {
+          var where = terms.map(function(t) { return "p." + scope.textAttr.id + ":" + t + "*"; }).join(" AND ");
+          var whereNot = oldResults.map(function(t) { return "(NOT p." + scope.textAttr.id + ":\"" + t + "\")"; }).join(" AND ");
+          where = (where != "" && whereNot != "") ? where + " AND " + whereNot : where + whereNot;
+          TypeNodeTreeList.query({
+            graphId: scope.textAttr.domain.graph.id,
+            typeId: scope.textAttr.domain.id,
+            select: "properties." + scope.textAttr.id,
+            where: where
+          }, function(results) {
+            results = results
+              // filter nodes with missing property
+              .filter(function(result) {return result.properties[scope.textAttr.id] !== undefined;})
+              // map to attribute value
+              .map(function(result) { return getLocalizedProperty(result.properties[scope.textAttr.id]); });
+            if (results.length == 0) {
+              callback(oldResults);
+            } else {
+              // concatenate to previous results
+              results = oldResults.concat(results)
+                // filter unique properties
+                .filter(function(value, index, self){
+                  return self.indexOf(value) === index;
+                });
+              if (results.length > 25) {
+                callback(results);
+              } else {
+                queryNodeAttributeValues(terms, results, callback);
+              }
+            }
+          });
+        }
+
         elem.select2({
           allowClear: true,
           multiple: !!attrs.multiple,
           query: function(query) {
-            var tokens = (query.term.match(/\S+/g) || []);
-            var where = tokens.map(function(t) { return "p." + scope.textAttr.id + ":" + t + "*"; }).join(" AND ");
-            TypeNodeTreeList.query({
-              graphId: scope.textAttr.domain.graph.id,
-              typeId: scope.textAttr.domain.id,
-              select: "*",
-              where: where
-            }, function(results) {
-              results = results
-                // map to property
-                .map(function(result) {
-                  return getLocalizedProperty(result.properties[scope.textAttr.id]);
-                })
-                // filter unique properties
-                .filter(function(value, index, self){
-                  return self.indexOf(value) === index;
-                })
-                // map to select2 data format
-                .map(function(result){
-                  return {
-                    id: result,
-                    text: result
-                  };
-                });
+            var terms = (query.term.match(/\S+/g) || []);
+            var results = [];
+            queryNodeAttributeValues(terms, results, function(results) {
+              // map to select2 data format
+              results = results.map(function(result){
+                return {
+                  id: result,
+                  text: result
+                };
+              });
               query.callback({
                 results: results
               });
